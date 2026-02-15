@@ -1,21 +1,45 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { projects } from '../../data';
 import AnimateOnScroll from '../AnimateOnScroll';
 import { Project } from '../../types';
 import { useLightbox } from '../LightboxContext';
 
+const CAROUSEL_INTERVAL = 3500;
+
 const SectionWithGallery: React.FC<{ title: string; children: React.ReactNode; images: string[]; imagePosition?: 'left' | 'right' }> = ({ title, children, images, imagePosition = 'right' }) => {
   const [activeImage, setActiveImage] = useState(images[0]);
+  const [isPaused, setIsPaused] = useState(false);
   const { showLightbox } = useLightbox();
   const imageColOrder = imagePosition === 'right' ? 'md:order-2' : 'md:order-1';
   const contentColOrder = imagePosition === 'right' ? 'md:order-1' : 'md:order-2';
 
+  useEffect(() => {
+    if (images.length <= 1 || isPaused) return;
+    const interval = setInterval(() => {
+      setActiveImage((prev) => {
+        const currentIndex = images.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % images.length;
+        return images[nextIndex];
+      });
+    }, CAROUSEL_INTERVAL);
+    return () => clearInterval(interval);
+  }, [images, isPaused]);
+
   return (
     <AnimateOnScroll className="grid md:grid-cols-12 gap-12 my-16 md:my-24 items-start">
-      <div className={`md:col-span-7 ${imageColOrder}`}>
-        <button onClick={() => showLightbox(activeImage)} className="w-full block cursor-zoom-in">
-          <img src={activeImage} alt={`${title} active view`} className="w-full h-auto object-contain"/>
+      <div 
+        className={`md:col-span-7 ${imageColOrder} relative group`}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <button onClick={() => showLightbox(activeImage)} className="w-full block cursor-zoom-in overflow-hidden">
+          <img 
+            key={activeImage}
+            src={activeImage} 
+            alt={`${title} active view`} 
+            className="w-full h-auto object-contain transition-opacity duration-700 animate-fade-in"
+          />
         </button>
       </div>
       <div className={`md:col-span-5 ${contentColOrder}`}>
@@ -25,7 +49,13 @@ const SectionWithGallery: React.FC<{ title: string; children: React.ReactNode; i
         </div>
         <div className="grid grid-cols-7 gap-2">
           {images.map((img, index) => (
-            <button key={index} onClick={() => setActiveImage(img)} className={`w-full transition-opacity duration-300 ${activeImage === img ? 'opacity-100 border-2 border-brand-yellow' : 'opacity-50 hover:opacity-100'}`}>
+            <button 
+                key={index} 
+                onClick={() => setActiveImage(img)} 
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                className={`w-full transition-all duration-300 ${activeImage === img ? 'opacity-100 border-2 border-brand-yellow scale-105' : 'opacity-50 hover:opacity-100'}`}
+            >
                <img src={img} alt={`${title} thumbnail ${index + 1}`} className="w-full h-auto object-contain" />
             </button>
           ))}
@@ -50,9 +80,9 @@ const SectionWithCenteredTextAndImage: React.FC<{ title: string; children: React
     );
 };
 
-// Custom component for the "Unseen Exposures" concept section layout
 const UnseenExposuresConceptSection: React.FC<{ project: Project; images: string[] }> = ({ project, images }) => {
     const [activeImage, setActiveImage] = useState(images[0]);
+    const [isPaused, setIsPaused] = useState(false);
     const { showLightbox } = useLightbox();
 
     const content = project.concept || '';
@@ -62,6 +92,18 @@ const UnseenExposuresConceptSection: React.FC<{ project: Project; images: string
         const [title, ...rest] = part.split('\n');
         return { title, text: rest.join('\n') };
     });
+
+    useEffect(() => {
+        if (images.length <= 1 || isPaused) return;
+        const interval = setInterval(() => {
+            setActiveImage((prev) => {
+                const currentIndex = images.indexOf(prev);
+                const nextIndex = (currentIndex + 1) % images.length;
+                return images[nextIndex];
+            });
+        }, CAROUSEL_INTERVAL);
+        return () => clearInterval(interval);
+    }, [images, isPaused]);
 
     return (
         <AnimateOnScroll className="my-16 md:my-24">
@@ -81,13 +123,26 @@ const UnseenExposuresConceptSection: React.FC<{ project: Project; images: string
                 </div>
                 
                 {images.length > 0 && (
-                    <div className="w-full">
-                        <button onClick={() => showLightbox(activeImage)} className="w-full mb-4 block cursor-zoom-in">
-                            <img src={activeImage} alt={`Concept active view`} className="w-full h-auto object-contain"/>
+                    <div 
+                        className="w-full"
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => setIsPaused(false)}
+                    >
+                        <button onClick={() => showLightbox(activeImage)} className="w-full mb-4 block cursor-zoom-in overflow-hidden">
+                            <img 
+                                key={activeImage}
+                                src={activeImage} 
+                                alt={`Concept active view`} 
+                                className="w-full h-auto object-contain transition-opacity duration-700 animate-fade-in"
+                            />
                         </button>
                         <div className="grid grid-cols-7 gap-2">
                             {images.map((img, index) => (
-                                <button key={index} onClick={() => setActiveImage(img)} className={`w-full transition-opacity duration-300 ${activeImage === img ? 'opacity-100 border-2 border-brand-yellow' : 'opacity-50 hover:opacity-100'}`}>
+                                <button 
+                                    key={index} 
+                                    onClick={() => setActiveImage(img)} 
+                                    className={`w-full transition-all duration-300 ${activeImage === img ? 'opacity-100 border-2 border-brand-yellow scale-105' : 'opacity-50 hover:opacity-100'}`}
+                                >
                                     <img src={img} alt={`Concept thumbnail ${index + 1}`} className="w-full h-auto object-contain" />
                                 </button>
                             ))}
@@ -99,10 +154,8 @@ const UnseenExposuresConceptSection: React.FC<{ project: Project; images: string
     );
 }
 
-// Fix: Use React.ReactNode instead of JSX.Element to resolve namespace error.
 const parseTextWithLinks = (text: string): React.ReactNode[] => {
     const linkRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
-    // Fix: Use React.ReactNode instead of JSX.Element to resolve namespace error.
     const parts: React.ReactNode[] = [];
     let lastIndex = 0;
     let match;
@@ -185,10 +238,22 @@ const TextOnlySection: React.FC<{ title: string; children: string | string[] | u
     </AnimateOnScroll>
 );
 
-// Custom component for the outcome section layout for specific projects
 const SectionWithTextAboveGallery: React.FC<{ title: string; text: string | string[] | undefined; images: string[] }> = ({ title, text, images }) => {
     const [activeImage, setActiveImage] = useState(images[0]);
+    const [isPaused, setIsPaused] = useState(false);
     const { showLightbox } = useLightbox();
+
+    useEffect(() => {
+        if (images.length <= 1 || isPaused) return;
+        const interval = setInterval(() => {
+            setActiveImage((prev) => {
+                const currentIndex = images.indexOf(prev);
+                const nextIndex = (currentIndex + 1) % images.length;
+                return images[nextIndex];
+            });
+        }, CAROUSEL_INTERVAL);
+        return () => clearInterval(interval);
+    }, [images, isPaused]);
 
     return (
         <AnimateOnScroll className="my-16 md:my-24">
@@ -200,13 +265,26 @@ const SectionWithTextAboveGallery: React.FC<{ title: string; text: string | stri
                 </div>
                 
                 {images.length > 0 && (
-                    <div className="w-full">
-                        <button onClick={() => showLightbox(activeImage)} className="w-full mb-4 block cursor-zoom-in">
-                            <img src={activeImage} alt={`${title} active view`} className="w-full h-auto object-contain"/>
+                    <div 
+                        className="w-full"
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => setIsPaused(false)}
+                    >
+                        <button onClick={() => showLightbox(activeImage)} className="w-full mb-4 block cursor-zoom-in overflow-hidden">
+                            <img 
+                                key={activeImage}
+                                src={activeImage} 
+                                alt={`${title} active view`} 
+                                className="w-full h-auto object-contain transition-opacity duration-700 animate-fade-in"
+                            />
                         </button>
                         <div className="grid grid-cols-7 gap-2">
                             {images.map((img, index) => (
-                                <button key={index} onClick={() => setActiveImage(img)} className={`w-full transition-opacity duration-300 ${activeImage === img ? 'opacity-100 border-2 border-brand-yellow' : 'opacity-50 hover:opacity-100'}`}>
+                                <button 
+                                    key={index} 
+                                    onClick={() => setActiveImage(img)} 
+                                    className={`w-full transition-all duration-300 ${activeImage === img ? 'opacity-100 border-2 border-brand-yellow scale-105' : 'opacity-50 hover:opacity-100'}`}
+                                >
                                     <img src={img} alt={`${title} thumbnail ${index + 1}`} className="w-full h-auto object-contain" />
                                 </button>
                             ))}
