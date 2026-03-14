@@ -1443,7 +1443,14 @@ const CompostableAltar: React.FC<{ project: Project; prev: Project | null; next:
           <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
             <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Outcome</span>
             <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-4">The Living Experiment</h2>
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mb-8">{project.outcome}</p>
+            <div className="max-w-2xl mb-4">{renderContent(project.outcome)}</div>
+            <a
+              href="https://carmenrobresdev.grafana.net/public-dashboards/2f0d_b1b6d794fd3bea7a44c23bf50f4"
+              target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-sans text-black dark:text-brand-light border border-black dark:border-brand-light px-5 py-3 mb-8 hover:bg-black hover:text-white dark:hover:bg-brand-light dark:hover:text-black transition-colors"
+            >
+              See Data Results →
+            </a>
             <div className="grid grid-cols-3 gap-3">
               {outcomeImages.map((img, i) => (
                 <Img key={i} src={img} alt={`Outcome ${i + 1}`} className={`w-full ${i === 0 ? 'col-span-3 aspect-[21/9]' : 'aspect-square'}`} />
