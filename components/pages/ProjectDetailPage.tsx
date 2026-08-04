@@ -75,12 +75,28 @@ const renderContent = (content: string | string[] | undefined, isProcess = false
   return null;
 };
 
+// Many project images are hosted on Imgur at their original upload size (often
+// several MB from phone/camera photos), which is too heavy to load on slower
+// connections/machines. Route them through a resizing proxy so the browser
+// only downloads a compressed, appropriately-sized version.
+const optimizeImage = (url: string, width: number): string => {
+  if (!url || !url.startsWith('http')) return url;
+  const bare = url.replace(/^https?:\/\//, '');
+  return `https://images.weserv.nl/?url=${encodeURIComponent(bare)}&w=${width}&q=75&output=webp`;
+};
+
 // Clickable image
 const Img: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className = '' }) => {
   const { showLightbox } = useLightbox();
   return (
-    <button onClick={() => showLightbox(src)} className={`block cursor-zoom-in overflow-hidden group ${className}`}>
-      <img src={src} alt={alt} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+    <button onClick={() => showLightbox(optimizeImage(src, 2200))} className={`block cursor-zoom-in overflow-hidden group ${className}`}>
+      <img
+        src={optimizeImage(src, 1400)}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+      />
     </button>
   );
 };
@@ -1549,7 +1565,7 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
 
       {/* ── HERO ── */}
       <div className="relative h-[70vh] overflow-hidden">
-        <img src={aestheticHero} alt={project.title} className="w-full h-full object-cover" />
+        <img src={optimizeImage(aestheticHero, 1920)} alt={project.title} loading="eager" decoding="async" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
           <AnimateOnScroll>
