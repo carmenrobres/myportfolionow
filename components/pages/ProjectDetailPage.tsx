@@ -133,8 +133,6 @@ const ProjectNav: React.FC<{ prev: Project | null; next: Project | null }> = ({ 
 // ─── PROJECT 1: Future of Designing and Making (MDEF Thesis Year 2) ──────────
 const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next: Project | null }> = ({ project, prev, next }) => {
   const [activePhase, setActivePhase] = useState(0);
-  const [mapCard, setMapCard] = useState(0);
-  const [expCard, setExpCard] = useState(0);
   const images = project.images || [];
 
   const phases = [
@@ -216,69 +214,50 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
     </div>
   );
 
+  // All cards shown stacked — no click required to read each one
   const CardGrid: React.FC<{
     cards: { num?: string; label?: string; title: string; img?: string; images?: string[]; captions?: string[]; text: string }[];
-    active: number;
-    setActive: (i: number) => void;
     stackImages?: boolean;
-  }> = ({ cards, active, setActive, stackImages = false }) => {
-    const card = cards[active];
-    const imgs = card.images ?? (card.img ? [card.img] : []);
-    const captions = card.captions ?? [];
-    return (
-      <div>
-        {/* Clickable card buttons — all visible */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {cards.map((c, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className={`text-[11px] uppercase tracking-[0.15em] font-sans px-4 py-2.5 border transition-all duration-200 text-left ${
-                active === i
-                  ? 'bg-black dark:bg-brand-light text-white dark:text-black border-black dark:border-brand-light'
-                  : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500 hover:text-black dark:hover:text-brand-light'
-              }`}
-            >
-              <span className="opacity-50 mr-1.5">{c.num ?? c.label}</span>
-              {c.title}
-            </button>
-          ))}
-        </div>
-
-        {/* Active card content */}
-        <div className="border border-gray-200 dark:border-gray-800 grid md:grid-cols-2">
-          {/* Images side */}
-          <div className="bg-gray-50 dark:bg-gray-950 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800">
-            {imgs.length === 0 ? null : stackImages ? (
-              <div className="divide-y divide-gray-200 dark:divide-gray-800">
-                {imgs.map((img, i) => (
-                  <div key={i}>
-                    <Img src={img} alt={captions[i] ?? `Image ${i + 1}`} className="w-full" />
-                    {captions[i] && (
-                      <p className="px-5 py-2.5 text-xs text-gray-500 dark:text-gray-400 italic">{captions[i]}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div>
-                <Img src={imgs[0]} alt={captions[0] ?? card.title} className="w-full" />
-                {captions[0] && (
-                  <p className="px-5 py-2.5 text-xs text-gray-500 dark:text-gray-400 italic border-t border-gray-200 dark:border-gray-800">{captions[0]}</p>
-                )}
-              </div>
-            )}
+  }> = ({ cards, stackImages = false }) => (
+    <div className="space-y-6">
+      {cards.map((card, idx) => {
+        const imgs = card.images ?? (card.img ? [card.img] : []);
+        const captions = card.captions ?? [];
+        return (
+          <div key={idx} className="border border-gray-200 dark:border-gray-800 grid md:grid-cols-2">
+            {/* Images side */}
+            <div className="bg-gray-50 dark:bg-gray-950 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800">
+              {imgs.length === 0 ? null : stackImages ? (
+                <div className="divide-y divide-gray-200 dark:divide-gray-800">
+                  {imgs.map((img, i) => (
+                    <div key={i}>
+                      <Img src={img} alt={captions[i] ?? `Image ${i + 1}`} className="w-full" />
+                      {captions[i] && (
+                        <p className="px-5 py-2.5 text-xs text-gray-500 dark:text-gray-400 italic">{captions[i]}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <Img src={imgs[0]} alt={captions[0] ?? card.title} className="w-full" />
+                  {captions[0] && (
+                    <p className="px-5 py-2.5 text-xs text-gray-500 dark:text-gray-400 italic border-t border-gray-200 dark:border-gray-800">{captions[0]}</p>
+                  )}
+                </div>
+              )}
+            </div>
+            {/* Text side */}
+            <div className="p-8 flex flex-col justify-center">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-2">{card.num ?? card.label}</span>
+              <h3 className="text-lg font-bold text-black dark:text-brand-light font-sans mb-4">{card.title}</h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{card.text}</p>
+            </div>
           </div>
-          {/* Text side */}
-          <div className="p-8 flex flex-col justify-center">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-2">{card.num ?? card.label}</span>
-            <h3 className="text-lg font-bold text-black dark:text-brand-light font-sans mb-4">{card.title}</h3>
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{card.text}</p>
-          </div>
-        </div>
-      </div>
-    );
-  };
+        );
+      })}
+    </div>
+  );
 
   return (
     <div className="pb-24">
@@ -291,6 +270,10 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
             <p className="text-xs uppercase tracking-widest text-white/60 mb-3 font-sans">MDEF Thesis Year 2 · {project.year}</p>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter uppercase text-white font-sans leading-none max-w-4xl">{project.title}</h1>
             <p className="mt-3 text-lg text-white/70 max-w-2xl font-sans">{project.subtitle}</p>
+            <a href={project.externalLink} target="_blank" rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 bg-white text-black px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors font-sans">
+              Download Thesis ↓
+            </a>
           </AnimateOnScroll>
         </div>
       </div>
@@ -304,12 +287,27 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
             <span><strong className="text-black dark:text-brand-light">Year</strong> {project.year}</span>
             <span><strong className="text-black dark:text-brand-light">Context</strong> MDEF · Elisava & IAAC</span>
             <span><strong className="text-black dark:text-brand-light">Partners</strong> Fablab Barcelona · Ateneu de Gràcia · Fab Casa del Mig</span>
-            <a href={project.externalLink} target="_blank" rel="noopener noreferrer"
-              className="text-black dark:text-brand-light underline hover:text-brand-muted dark:hover:text-gray-400 transition-colors">
-              Download Thesis →
-            </a>
           </div>
           <PhaseNav />
+
+          {/* Quick summary — the whole thesis in a glance, no clicking required */}
+          <div className="mb-12 border border-gray-200 dark:border-gray-800 p-6 md:p-8 bg-gray-50 dark:bg-gray-950">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">In Short</span>
+            <p className="mt-2 text-lg md:text-xl font-bold leading-snug text-black dark:text-brand-light font-sans max-w-2xl">
+              "Can AI tools — usually built for big industries — instead support local communities and give people more control over how things are designed and made?"
+            </p>
+            <ul className="mt-4 space-y-2">
+              {[
+                'AI can lower the barrier to design — but only with the right framing and support.',
+                'Amplification (more exploration) is more valuable to communities than acceleration (finishing faster).',
+                'The biggest gap: going from AI output to something actually fabricable.',
+              ].map((c, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-400 shrink-0" />{c}
+                </li>
+              ))}
+            </ul>
+          </div>
         </AnimateOnScroll>
 
         {/* ── OVERVIEW ── */}
@@ -321,9 +319,6 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
             </div>
             <div className="grid md:grid-cols-3 gap-12 mb-16">
               <div className="md:col-span-2">
-                <p className="text-xl md:text-2xl font-bold leading-snug text-black dark:text-brand-light font-sans mb-6">
-                  "Can AI tools — usually built for big industries — instead support local communities and give people more control over how things are designed and made?"
-                </p>
                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">{project.overview}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{project.needs}</p>
               </div>
@@ -368,7 +363,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
                 Before testing anything, I built research maps to understand where AI tools sit in the design process — and where the real gaps are for non-expert makers.
               </p>
             </div>
-            <CardGrid cards={maps} active={mapCard} setActive={setMapCard} />
+            <CardGrid cards={maps} />
           </AnimateOnScroll>
         </section>
 
@@ -382,7 +377,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
                 Every AI tool was evaluated not just on screen — but on whether it could actually produce something fabricable with makerspace machines.
               </p>
             </div>
-            <CardGrid cards={experiments} active={expCard} setActive={setExpCard} stackImages />
+            <CardGrid cards={experiments} stackImages />
           </AnimateOnScroll>
         </section>
 

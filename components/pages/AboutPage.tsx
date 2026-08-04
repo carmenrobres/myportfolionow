@@ -19,7 +19,7 @@ const AboutPage: React.FC = () => {
                 <h1 className="text-4xl sm:text-5xl font-bold tracking-tight font-sans text-black dark:text-brand-light">Carmen Robres De Veciana</h1>
                 <h2 className="text-2xl sm:text-3xl font-medium text-gray-800 dark:text-gray-200 mt-1 font-sans">Industrial Design Engineer</h2>
                 <p className="mt-6 text-base text-gray-700 dark:text-gray-300 max-w-xl">
-                Industrial Design Engineer and Innovation professional working at the intersection of technology, design and applied research. My experience spans product design, emerging technologies, AI applications and innovation projects, transforming ideas into tangible solutions through collaboration, experimentation and prototyping. I currently work as Innovation Officer at BSC, connecting deep tech research with real-world applications, with a particular interest in sustainability, open innovation and applied prototyping.
+                Industrial Design Engineer and Innovation professional working at the intersection of technology, design and applied research. My experience spans from product design and emerging technologies to AI applications and innovation projects, transforming ideas into tangible solutions through collaboration, experimentation and prototyping. I currently work as Innovation Officer at BSC, connecting deep tech research with real-world applications, with a particular interest in sustainability, open innovation and applied prototyping.
                 </p>
                 <div className="text-sm mt-6">
                   <h3 className="font-semibold text-black dark:text-brand-light">Contact</h3>
@@ -53,7 +53,7 @@ const AboutPage: React.FC = () => {
              <div>
                 <h3 className="font-semibold text-black dark:text-brand-light">Junior Designer, Incapto Coffee</h3>
                 <p className="text-sm text-brand-muted dark:text-gray-400">June 2021 - June 2023</p>
-                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">Project management for B2B, including the development of print and digital materials (catalogs, packaging, newsletters, banners, social media content), campaign concepts, retail designs, and ad creation with copywriting.</p>
+                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">Project management for B2B, including the development of print and digital materials (catalogues, packaging, newsletters, banners, social media content), campaign concepts, retail designs, and ad creation with copywriting.</p>
              </div>
           </div>
         </div>
