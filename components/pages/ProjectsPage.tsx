@@ -11,10 +11,16 @@ const ProjectsPage: React.FC = () => {
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const filteredProjects = activeCategory === 'All'
+  const getYear = (year: string) => {
+    const match = year.match(/\d{4}/);
+    return match ? parseInt(match[0], 10) : 0;
+  };
+
+  const filteredProjects = (activeCategory === 'All'
     ? projects
     // @ts-ignore
-    : projects.filter(p => p.category === activeCategory);
+    : projects.filter(p => p.category === activeCategory)
+  ).slice().sort((a, b) => getYear(b.year) - getYear(a.year));
 
   const categories: (ProjectCategory | 'All')[] = ['All', ...Object.values(ProjectCategory)];
 
