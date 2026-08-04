@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom';
 import { projects } from '../../data';
 import ProjectCard from '../ProjectCard';
 import AnimateOnScroll from '../AnimateOnScroll';
-import { gradientPresets } from '../GradientShimmer';
+import MarqueeAlongSvgPath from '../MarqueeAlongSvgPath';
 
 const HIGHLIGHTED_PROJECT_IDS = ['compostable-altar', 'tania-pilot', 'miralls-del-dema'];
 
-const HERO_GLOW_BACKGROUND = `linear-gradient(105deg, ${gradientPresets.sunrise
-  .map(stop => `${stop.color} ${(stop.position * 100).toFixed(1)}%`)
-  .join(', ')})`;
+// Gentle wave the project thumbnails drift along, behind the headline
+const HERO_MARQUEE_PATH = 'M-50,180 C 150,60 300,300 550,170 C 800,40 950,260 1250,120';
 
 const HomePage: React.FC = () => {
   const featuredProjects = HIGHLIGHTED_PROJECT_IDS
@@ -20,15 +19,25 @@ const HomePage: React.FC = () => {
     <div className="space-y-24 md:space-y-40 pb-24 md:pb-40">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 md:pt-24">
          {/* Hero Section */}
-        <section className="min-h-[50vh] flex flex-col justify-center text-left">
+        <section className="relative min-h-[50vh] flex flex-col justify-center text-left overflow-hidden">
+          {/* Background: project photos drifting along a path behind the headline */}
+          <MarqueeAlongSvgPath
+            path={HERO_MARQUEE_PATH}
+            viewBox="0 0 1200 360"
+            baseVelocity={3}
+            repeat={2}
+            responsive
+            className="absolute inset-0 -z-10 opacity-50 dark:opacity-30 pointer-events-none"
+          >
+            {projects.map(project => (
+              <div key={project.id} className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden ring-2 ring-white dark:ring-brand-black shadow-lg">
+                <img src={project.image} alt={project.title} className="w-full h-full object-cover" draggable={false} />
+              </div>
+            ))}
+          </MarqueeAlongSvgPath>
+
           <AnimateOnScroll>
             <div className="relative max-w-4xl">
-              {/* Animated gradient glow behind the headline */}
-              <div
-                aria-hidden="true"
-                className="animate-hero-glow pointer-events-none absolute -inset-x-8 -inset-y-12 -z-10 rounded-[3rem] opacity-50 dark:opacity-30 blur-3xl"
-                style={{ backgroundImage: HERO_GLOW_BACKGROUND }}
-              />
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black dark:text-brand-light leading-tight font-sans">
                   Hi, I'm an Industrial Designer / Engineer /<br />
                   Researcher / Maker /<br />
