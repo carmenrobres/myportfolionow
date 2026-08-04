@@ -180,7 +180,7 @@ const DrawingCanvas: React.FC<{ isDark?: boolean }> = ({ isDark = false }) => {
         }}
       />
 
-      {/* Toolbar — bottom right of hero */}
+      {/* Toolbar - bottom right of hero */}
       <div
         className="absolute bottom-8 right-6 sm:right-10 lg:right-16 flex items-center gap-3 z-30"
         style={{ pointerEvents: 'auto' }}
@@ -201,7 +201,7 @@ const DrawingCanvas: React.FC<{ isDark?: boolean }> = ({ isDark = false }) => {
           {isActive ? 'Drawing' : 'Draw'}
         </button>
 
-        {/* Brush picker — only when active */}
+        {/* Brush picker - only when active */}
         {isActive && (
           <div className="flex items-center gap-1.5">
             {brushes.map((b, i) => (
@@ -247,7 +247,7 @@ const DrawingCanvas: React.FC<{ isDark?: boolean }> = ({ isDark = false }) => {
         )}
       </div>
 
-      {/* Hint — only on first load, fades out */}
+      {/* Hint - only on first load, fades out */}
       {!hasDrawn && !isActive && (
         <div
           className="absolute bottom-8 right-6 sm:right-10 lg:right-[200px] pointer-events-none"

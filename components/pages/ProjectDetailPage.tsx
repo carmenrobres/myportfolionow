@@ -75,23 +75,13 @@ const renderContent = (content: string | string[] | undefined, isProcess = false
   return null;
 };
 
-// Many project images are hosted on Imgur at their original upload size (often
-// several MB from phone/camera photos), which is too heavy to load on slower
-// connections/machines. Route them through a resizing proxy so the browser
-// only downloads a compressed, appropriately-sized version.
-const optimizeImage = (url: string, width: number): string => {
-  if (!url || !url.startsWith('http')) return url;
-  const bare = url.replace(/^https?:\/\//, '');
-  return `https://images.weserv.nl/?url=${encodeURIComponent(bare)}&w=${width}&q=75&output=webp`;
-};
-
 // Clickable image
 const Img: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className = '' }) => {
   const { showLightbox } = useLightbox();
   return (
-    <button onClick={() => showLightbox(optimizeImage(src, 2200))} className={`block cursor-zoom-in overflow-hidden group ${className}`}>
+    <button onClick={() => showLightbox(src)} className={`block cursor-zoom-in overflow-hidden group ${className}`}>
       <img
-        src={optimizeImage(src, 1400)}
+        src={src}
         alt={alt}
         loading="lazy"
         decoding="async"
@@ -101,7 +91,7 @@ const Img: React.FC<{ src: string; alt: string; className?: string }> = ({ src, 
   );
 };
 
-// Section heading — original style preserved
+// Section heading - original style preserved
 const SectionHeading: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <h2 className="text-xl font-bold uppercase tracking-wider mb-4 text-black dark:text-brand-light font-sans">{children}</h2>
 );
@@ -147,22 +137,22 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
     {
       num: '01', title: 'AI Tools vs. Maker Level',
       img: images[0],
-      text: 'This graph plots AI tools across two axes: maker experience level (low → high) and output type (digital vs. physical fabrication). The key finding: most AI tools are built for expert users — but makerspaces host all skill levels, mostly beginners. This mismatch became the core problem to solve.',
+      text: 'This graph plots AI tools across two axes: maker experience level (low → high) and output type (digital vs. physical fabrication). The key finding: most AI tools are built for expert users - but makerspaces host all skill levels, mostly beginners. This mismatch became the core problem to solve.',
     },
     {
       num: '02', title: 'Three Ways of Designing with AI',
       img: images[1],
-      text: 'Maps the full design process from discovery to testing, showing three approaches: Traditional (no AI), Acceleration (same output, less time), and Amplification (more exploration, same time). Amplification is the most valuable use for creative communities — AI as a tool for depth, not just speed.',
+      text: 'Maps the full design process from discovery to testing, showing three approaches: Traditional (no AI), Acceleration (same output, less time), and Amplification (more exploration, same time). Amplification is the most valuable use for creative communities - AI as a tool for depth, not just speed.',
     },
     {
       num: '03', title: 'From Sketch to AI Image',
       img: images[3],
-      text: 'A single hand-drawn sketch fed into an image generator immediately produces render-quality output — with no digital design skills needed. This demonstrated the lowest possible entry point for makers to start using AI in their process.',
+      text: 'A single hand-drawn sketch fed into an image generator immediately produces render-quality output - with no digital design skills needed. This demonstrated the lowest possible entry point for makers to start using AI in their process.',
     },
     {
       num: '04', title: 'Barcelona Makerspaces Network',
       img: images[4],
-      text: 'Map of fab labs and makerspaces in Barcelona showing the three collaborating spaces: Fablab Barcelona (institutional), Ateneu de Gràcia (community-run), and Fab Casa del Mig (neighbourhood). Each had a different making culture — which shaped how AI tools were received.',
+      text: 'Map of fab labs and makerspaces in Barcelona showing the three collaborating spaces: Fablab Barcelona (institutional), Ateneu de Gràcia (community-run), and Fab Casa del Mig (neighbourhood). Each had a different making culture - which shaped how AI tools were received.',
     },
   ];
 
@@ -170,26 +160,26 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
     {
       label: 'Experiment A', title: 'Text-to-3D → Physical Print',
       images: ['https://i.imgur.com/3MYerGR.jpeg'],
-      captions: ['Raw AI-generated mesh — 4 angles, 128k–167k faces'],
+      captions: ['Raw AI-generated mesh - 4 angles, 128k–167k faces'],
       text: 'Using text-to-3D tools, I generated meshes from prompts and sent them directly to the printer. The challenge: AI models often contain non-manifold geometry that printers reject. I learned to repair meshes, adapt prompts, and understand what makes geometry printable. The pink chairs, vases, and candlestick holders were all AI-prompted and physically printed.',
     },
     {
       label: 'Experiment B', title: 'AI Vector → CNC Laser Cutter',
       images: ['https://i.imgur.com/xfj1sHn.jpeg'],
       captions: ['DALL·E prompt → CNC-cut plywood Tic Tac Toe set'],
-      text: 'I prompted DALL·E with fabrication constraints built into the text — closed paths, red for cut lines, black for engraving. The resulting file was sent straight to the laser cutter. This proved that with the right prompt structure, AI can bridge ideation and fabrication even for users with no CAD knowledge.',
+      text: 'I prompted DALL·E with fabrication constraints built into the text - closed paths, red for cut lines, black for engraving. The resulting file was sent straight to the laser cutter. This proved that with the right prompt structure, AI can bridge ideation and fabrication even for users with no CAD knowledge.',
     },
     {
       label: 'Deep Dive', title: 'Prompt Engineering for Fabrication',
       images: ['https://i.imgur.com/dCM4NXt.jpeg', 'https://i.imgur.com/iHJK1UI.jpeg'],
       captions: ['Fabrication-oriented prompt example 1', 'Fabrication-oriented prompt example 2'],
-      text: 'Prompt quality has a direct impact on fabricability. A generic prompt produces geometry full of errors and wrong scale. A prompt that includes material context, fabrication method, and constraints produces something far closer to printable. I developed prompt templates specifically for makers — giving them language to communicate fabrication intent, not just aesthetic intent.',
+      text: 'Prompt quality has a direct impact on fabricability. A generic prompt produces geometry full of errors and wrong scale. A prompt that includes material context, fabrication method, and constraints produces something far closer to printable. I developed prompt templates specifically for makers - giving them language to communicate fabrication intent, not just aesthetic intent.',
     },
     {
       label: 'Self-Built Tool', title: 'AI 3D Prompt Generator',
       images: ['https://i.imgur.com/6lcJSA0.jpeg', 'https://i.imgur.com/3Wp1GO2.jpeg'],
-      captions: ['The tool interface — guides mesh vs CAD choice', 'Mesh quality: good context prompt vs. generic prompt'],
-      text: 'I built my own tool from scratch to make prompt engineering accessible to non-technical makers. It guides users through choosing between mesh-based modeling (organic forms) and CAD-style modeling (precise geometry) — then generates a fabrication-aware prompt tailored to that choice.',
+      captions: ['The tool interface - guides mesh vs CAD choice', 'Mesh quality: good context prompt vs. generic prompt'],
+      text: 'I built my own tool from scratch to make prompt engineering accessible to non-technical makers. It guides users through choosing between mesh-based modeling (organic forms) and CAD-style modeling (precise geometry) - then generates a fabrication-aware prompt tailored to that choice.',
     },
   ];
 
@@ -214,7 +204,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
     </div>
   );
 
-  // All cards shown stacked — no click required to read each one
+  // All cards shown stacked - no click required to read each one
   const CardGrid: React.FC<{
     cards: { num?: string; label?: string; title: string; img?: string; images?: string[]; captions?: string[]; text: string }[];
     stackImages?: boolean;
@@ -290,15 +280,15 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
           </div>
           <PhaseNav />
 
-          {/* Quick summary — the whole thesis in a glance, no clicking required */}
+          {/* Quick summary - the whole thesis in a glance, no clicking required */}
           <div className="mb-12 border border-gray-200 dark:border-gray-800 p-6 md:p-8 bg-gray-50 dark:bg-gray-950">
             <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">In Short</span>
             <p className="mt-2 text-lg md:text-xl font-bold leading-snug text-black dark:text-brand-light font-sans max-w-2xl">
-              "Can AI tools — usually built for big industries — instead support local communities and give people more control over how things are designed and made?"
+              "Can AI tools - usually built for big industries - instead support local communities and give people more control over how things are designed and made?"
             </p>
             <ul className="mt-4 space-y-2">
               {[
-                'AI can lower the barrier to design — but only with the right framing and support.',
+                'AI can lower the barrier to design - but only with the right framing and support.',
                 'Amplification (more exploration) is more valuable to communities than acceleration (finishing faster).',
                 'The biggest gap: going from AI output to something actually fabricable.',
               ].map((c, i) => (
@@ -360,7 +350,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
               <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Phase 01</span>
               <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans">Mapping the Landscape</h2>
               <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 max-w-2xl">
-                Before testing anything, I built research maps to understand where AI tools sit in the design process — and where the real gaps are for non-expert makers.
+                Before testing anything, I built research maps to understand where AI tools sit in the design process - and where the real gaps are for non-expert makers.
               </p>
             </div>
             <CardGrid cards={maps} />
@@ -374,7 +364,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
               <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Phase 02</span>
               <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans">Making & Prototyping</h2>
               <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 max-w-2xl">
-                Every AI tool was evaluated not just on screen — but on whether it could actually produce something fabricable with makerspace machines.
+                Every AI tool was evaluated not just on screen - but on whether it could actually produce something fabricable with makerspace machines.
               </p>
             </div>
             <CardGrid cards={experiments} stackImages />
@@ -388,14 +378,14 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
               <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Phase 03</span>
               <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans">Teaching & Community Workshops</h2>
               <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 max-w-2xl">
-                Testing tools alone wasn't enough. I brought everything to people — designed workshops from scratch, facilitated sessions at three makerspaces, and ran a public roundtable.
+                Testing tools alone wasn't enough. I brought everything to people - designed workshops from scratch, facilitated sessions at three makerspaces, and ran a public roundtable.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-3 mb-8">
               {[
-                { src: 'https://i.imgur.com/VvZ8iOl.jpeg', caption: 'Hands-on workshop session — AI tools on screen, mapping worksheets on the table' },
-                { src: 'https://i.imgur.com/amK3quc.jpeg', caption: 'Workshop exercises — participants\' sketch-to-image and prompt activities' },
+                { src: 'https://i.imgur.com/VvZ8iOl.jpeg', caption: 'Hands-on workshop session - AI tools on screen, mapping worksheets on the table' },
+                { src: 'https://i.imgur.com/amK3quc.jpeg', caption: 'Workshop exercises - participants\' sketch-to-image and prompt activities' },
                 { src: 'https://i.imgur.com/EA2yKhp.jpeg', caption: 'Public roundtable & AI-Making Manifesto presentation, Les Tres Xemeneies' },
               ].map((img, i) => (
                 <div key={i}>
@@ -409,13 +399,13 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
               <div className="border border-gray-200 dark:border-gray-800 p-6">
                 <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-3">Workshop Design</p>
                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  I designed the full curriculum from scratch — activities, printed worksheets, tool selection, pacing, and facilitation flow. Each session introduced AI tools through hands-on challenges: sketch to image, text to 3D, and bringing the result to a fabrication machine.
+                  I designed the full curriculum from scratch - activities, printed worksheets, tool selection, pacing, and facilitation flow. Each session introduced AI tools through hands-on challenges: sketch to image, text to 3D, and bringing the result to a fabrication machine.
                 </p>
               </div>
               <div className="border border-gray-200 dark:border-gray-800 p-6">
                 <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-3">Roundtable & Manifesto</p>
                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  The thesis concluded with a public roundtable at Les Tres Xemeneies. I presented the AI-Making Manifesto — principles for ethical and accessible AI in community design — to makers, educators, and researchers. On the table: CNC-cut objects and 3D-printed prototypes from the workshops.
+                  The thesis concluded with a public roundtable at Les Tres Xemeneies. I presented the AI-Making Manifesto - principles for ethical and accessible AI in community design - to makers, educators, and researchers. On the table: CNC-cut objects and 3D-printed prototypes from the workshops.
                 </p>
               </div>
             </div>
@@ -449,9 +439,9 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-6">{project.concept}</p>
                 <div className="space-y-4">
                   {[
-                    'AI can lower the barrier to design — but only when introduced with the right framing and support.',
+                    'AI can lower the barrier to design - but only when introduced with the right framing and support.',
                     'Amplification (more exploration in the same time) is more valuable to communities than acceleration (finishing faster).',
-                    'The physical step — from AI output to fabrication — is where most tools break down. That is the gap that needs design attention.',
+                    'The physical step - from AI output to fabrication - is where most tools break down. That is the gap that needs design attention.',
                   ].map((c, i) => (
                     <div key={i} className="flex items-start gap-4 border-l-2 border-gray-200 dark:border-gray-700 pl-4">
                       <span className="shrink-0 text-xs text-brand-muted dark:text-gray-600 font-sans mt-0.5">{String(i + 1).padStart(2, '0')}</span>
@@ -464,7 +454,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
                 <div className="border-l-4 border-black dark:border-brand-light pl-6">
                   <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-3">Core argument</p>
                   <p className="text-xl font-bold text-black dark:text-brand-light font-sans leading-snug">
-                    "AI's potential in design is not about speed or automation — it's about access and understanding."
+                    "AI's potential in design is not about speed or automation - it's about access and understanding."
                   </p>
                 </div>
                 <div className="border-l-4 border-gray-200 dark:border-gray-700 pl-6">
@@ -480,7 +470,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
               <div className="grid md:grid-cols-2 gap-8">
                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.outcome}</p>
                 <div className="space-y-2">
-                  {['AI-generated objects fabricated with makerspace tools', 'Four research maps — printed and displayed', 'Workshop documentation from all three makerspaces', 'The AI-Making Manifesto', 'Roundtable with practitioners, educators, and makers'].map((item, i) => (
+                  {['AI-generated objects fabricated with makerspace tools', 'Four research maps - printed and displayed', 'Workshop documentation from all three makerspaces', 'The AI-Making Manifesto', 'Roundtable with practitioners, educators, and makers'].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
                       <span className="w-1 h-1 rounded-full bg-gray-400 shrink-0" />
                       {item}
@@ -509,7 +499,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
       num: '01',
       title: 'Input',
       subtitle: 'The Voice',
-      text: 'Visitors stood before a microphone and spoke — about climate change, the future, their fears or hopes. Their words were the raw material.',
+      text: 'Visitors stood before a microphone and spoke - about climate change, the future, their fears or hopes. Their words were the raw material.',
       icon: '🎙',
     },
     {
@@ -531,7 +521,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
   return (
     <div className="pb-24">
 
-      {/* ── HERO — full bleed, night atmosphere ── */}
+      {/* ── HERO - full bleed, night atmosphere ── */}
       <div className="relative h-[80vh] overflow-hidden">
         <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
@@ -544,7 +534,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
               Miralls<br />del Demà
             </h1>
             <p className="mt-4 text-base md:text-lg text-white/65 max-w-xl font-sans">
-              Mirrors of Tomorrow — an interactive light installation where your voice shapes the future
+              Mirrors of Tomorrow - an interactive light installation where your voice shapes the future
             </p>
           </AnimateOnScroll>
         </div>
@@ -555,7 +545,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
           <Link to="/projects" className="mb-10 inline-block text-brand-muted dark:text-gray-400 hover:text-black dark:hover:text-brand-light transition-colors uppercase text-sm tracking-wider font-sans">← All Projects</Link>
           <div className="flex flex-wrap gap-x-8 gap-y-2 text-xs uppercase tracking-wider text-brand-muted dark:text-gray-400 font-sans">
             <span><strong className="text-black dark:text-brand-light">Year</strong> {project.year}</span>
-            <span><strong className="text-black dark:text-brand-light">Context</strong> MDEF · MAA · MRAC — IAAC Barcelona</span>
+            <span><strong className="text-black dark:text-brand-light">Context</strong> MDEF · MAA · MRAC - IAAC Barcelona</span>
             <span><strong className="text-black dark:text-brand-light">Audience</strong> 220,000+ visitors</span>
             <a href={project.externalLink} target="_blank" rel="noopener noreferrer"
               className="text-black dark:text-brand-light underline hover:text-brand-muted dark:hover:text-gray-400 transition-colors">
@@ -569,13 +559,13 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
               <p className="text-2xl md:text-3xl font-bold leading-snug text-black dark:text-brand-light font-sans mb-6">
-                "Is climate change a natural challenge — or a direct consequence of human action?"
+                "Is climate change a natural challenge - or a direct consequence of human action?"
               </p>
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                 {project.overview}
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                Over three nights in Barcelona's Parc Central del Poblenou, the installation ran continuously — processing voice after voice, turning collective expression into collective light. More than 220,000 people visited Llum BCN 2025.
+                Over three nights in Barcelona's Parc Central del Poblenou, the installation ran continuously - processing voice after voice, turning collective expression into collective light. More than 220,000 people visited Llum BCN 2025.
               </p>
             </div>
             <div>
@@ -592,7 +582,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
             <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">How It Works</span>
             <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans">Voice → AI → Light</h2>
             <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 max-w-2xl">
-              The installation merged three systems in real time — sound capture, AI sentiment analysis, and generative light output — creating a live feedback loop between what people said and what they saw.
+              The installation merged three systems in real time - sound capture, AI sentiment analysis, and generative light output - creating a live feedback loop between what people said and what they saw.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-px bg-gray-200 dark:bg-gray-800">
@@ -600,7 +590,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
               <div key={i} className="bg-white dark:bg-black p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-2xl">{layer.icon}</span>
-                  <span className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans">{layer.num} — {layer.title}</span>
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans">{layer.num} - {layer.title}</span>
                 </div>
                 <h3 className="font-bold text-black dark:text-brand-light font-sans mb-3">{layer.subtitle}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{layer.text}</p>
@@ -609,13 +599,13 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
           </div>
         </AnimateOnScroll>
 
-        {/* ── CONCEPT IMAGES — each with context ── */}
+        {/* ── CONCEPT IMAGES - each with context ── */}
         {images.length > 0 && (
           <AnimateOnScroll className="mt-20">
-            {/* Aesthetic hero image — full width, no caption */}
+            {/* Aesthetic hero image - full width, no caption */}
             <Img
               src={images[0]}
-              alt="Miralls del Demà — installation atmosphere"
+              alt="Miralls del Demà - installation atmosphere"
               className="w-full aspect-[21/9] mb-3"
             />
             {/* Three contextual renders in a row with labels */}
@@ -647,7 +637,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
             <div>
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">{project.needs}</p>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                Developed during the Interaction and Prototyping Seminar at IAAC, this was a cross-programme collaboration between students from the Master in Advanced Architecture (MAA), Master in Robotics and Advanced Construction (MRAC), and Master in Design for Emergent Futures (MDEF). The challenge: merge sound capture, NLP, visual generation, and large-scale LED projection into a single responsive system — robust enough to run continuously for three festival nights outdoors.
+                Developed during the Interaction and Prototyping Seminar at IAAC, this was a cross-programme collaboration between students from the Master in Advanced Architecture (MAA), Master in Robotics and Advanced Construction (MRAC), and Master in Design for Emergent Futures (MDEF). The challenge: merge sound capture, NLP, visual generation, and large-scale LED projection into a single responsive system - robust enough to run continuously for three festival nights outdoors.
               </p>
             </div>
             <div className="space-y-4 text-sm border-l border-gray-200 dark:border-gray-700 pl-8">
@@ -673,14 +663,14 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
           </div>
         </AnimateOnScroll>
 
-        {/* ── PROCESS — text first, compact image strip below ── */}
+        {/* ── PROCESS - text first, compact image strip below ── */}
         {processImages.length > 0 && (
           <AnimateOnScroll className="mt-20">
             <div className="border-t border-gray-200 dark:border-gray-700 pt-10 mb-10">
               <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Process</span>
               <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans">Building the System</h2>
             </div>
-            {/* Steps + learnings — full width, readable */}
+            {/* Steps + learnings - full width, readable */}
             <div className="grid md:grid-cols-2 gap-12 mb-10">
               <div>{renderContent(project.process, true)}</div>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed self-start">{project.learnings}</p>
@@ -694,7 +684,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
           </AnimateOnScroll>
         )}
 
-        {/* ── OUTCOME — text first, then images ── */}
+        {/* ── OUTCOME - text first, then images ── */}
         {outcomeImages.length > 0 && (
           <AnimateOnScroll className="mt-20">
             <div className="border-t border-gray-200 dark:border-gray-700 pt-10 mb-10">
@@ -707,11 +697,11 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
               <div className="border-l-4 border-black dark:border-brand-light pl-6">
                 <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-3">What it felt like</p>
                 <p className="text-base font-semibold text-black dark:text-brand-light font-sans leading-snug">
-                  "Calm tones produced gentle, slow waves — urgent messages generated fast, fractured movements."
+                  "Calm tones produced gentle, slow waves - urgent messages generated fast, fractured movements."
                 </p>
               </div>
             </div>
-            {/* Images after — compact grid */}
+            {/* Images after - compact grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {outcomeImages.map((img, i) => (
                 <Img key={i} src={img} alt={`Night view ${i + 1}`} className="w-full aspect-[4/3]" />
@@ -750,7 +740,7 @@ const MirallsDelDema: React.FC<{ project: Project; prev: Project | null; next: P
             <iframe
               width="100%" height="100%"
               src="https://www.youtube.com/embed/sL4F9EtnTpo"
-              title="Miralls del Demà — Llum BCN 2025"
+              title="Miralls del Demà - Llum BCN 2025"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -771,31 +761,31 @@ const UnseenExposures: React.FC<{ project: Project; prev: Project | null; next: 
   const processImages = project.processImages || [];
   const outcomeImages = project.outcomeImages || [];
 
-  // Fixed machine images — hardcoded to correct URLs
+  // Fixed machine images - hardcoded to correct URLs
   const machines = [
     {
       title: 'AdProfiler',
       subtitle: 'Discover How Advertisers Profile You',
-      description: 'Participants answered a 10-question personality test while a hidden camera captured their image. Within minutes the machine inferred age, gender, dominant emotion and personality traits — then generated a personalized ad using AI. The result is both amusing and unsettling: a demonstration of how quickly and confidently advertising algorithms build psychological profiles from almost nothing.',
+      description: 'Participants answered a 10-question personality test while a hidden camera captured their image. Within minutes the machine inferred age, gender, dominant emotion and personality traits - then generated a personalized ad using AI. The result is both amusing and unsettling: a demonstration of how quickly and confidently advertising algorithms build psychological profiles from almost nothing.',
       img: 'https://i.imgur.com/CEm7ovS.png',
     },
     {
       title: 'Read the Room',
       subtitle: 'Your Room, Quantified',
-      description: '"Read the Room" aggregated live data from all participants — displaying collective mood, gender ratio, extroversion level and more on a screen. It shows how platforms simplify complex human identities into measurable categories, often reinforcing bias in the process. The room becomes a dataset.',
+      description: '"Read the Room" aggregated live data from all participants - displaying collective mood, gender ratio, extroversion level and more on a screen. It shows how platforms simplify complex human identities into measurable categories, often reinforcing bias in the process. The room becomes a dataset.',
       img: 'https://i.imgur.com/UVMq0oE.png',
     },
     {
       title: 'Aggressive Machine',
       subtitle: 'When Algorithms Judge You',
-      description: 'A camera-based system analyzed body language and proximity to detect "aggressive behavior." When someone moved too close or gestured strongly, the machine triggered sound and light alerts. The piece makes visible the danger of context-free AI surveillance — where normal human expression becomes a threat signal.',
+      description: 'A camera-based system analyzed body language and proximity to detect "aggressive behavior." When someone moved too close or gestured strongly, the machine triggered sound and light alerts. The piece makes visible the danger of context-free AI surveillance - where normal human expression becomes a threat signal.',
       img: 'https://i.imgur.com/xTtSSjd.png',
     },
   ];
 
   return (
     <div className="pb-24">
-      {/* Hero — single full-bleed image */}
+      {/* Hero - single full-bleed image */}
       <div className="relative h-[70vh] overflow-hidden">
         <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -818,14 +808,14 @@ const UnseenExposures: React.FC<{ project: Project; prev: Project | null; next: 
           <MetaRow project={project} linkText="Visit Website" isPdf={false} />
         </AnimateOnScroll>
 
-        {/* Opening question — editorial pull quote */}
+        {/* Opening question - editorial pull quote */}
         <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-16">
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-3xl md:text-4xl font-bold leading-tight text-black dark:text-brand-light font-sans">
               "If you have nothing to hide,<br />you have nothing to fear."
             </p>
             <p className="mt-6 text-base text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
-              Most participants in the exhibition disagreed with this statement — yet most also believed they were not important enough to be surveilled. <em>Unseen Exposures</em> was built to challenge both assumptions at once.
+              Most participants in the exhibition disagreed with this statement - yet most also believed they were not important enough to be surveilled. <em>Unseen Exposures</em> was built to challenge both assumptions at once.
             </p>
           </div>
         </AnimateOnScroll>
@@ -838,7 +828,7 @@ const UnseenExposures: React.FC<{ project: Project; prev: Project | null; next: 
               {project.overview}
             </p>
             <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-              Developed as my first thesis project at MDEF & Fab Lab Barcelona, it was a year-long exploration into data ethics and surveillance capitalism. Rather than presenting privacy as an abstract concept, it put visitors directly into the feedback loop — turning them from passive users into active subjects of observation.
+              Developed as my first thesis project at MDEF & Fab Lab Barcelona, it was a year-long exploration into data ethics and surveillance capitalism. Rather than presenting privacy as an abstract concept, it put visitors directly into the feedback loop - turning them from passive users into active subjects of observation.
             </p>
           </div>
           <div className="text-sm space-y-5">
@@ -866,7 +856,7 @@ const UnseenExposures: React.FC<{ project: Project; prev: Project | null; next: 
             <div>
               <SectionHeading>The Problem: Surveillance Capitalism</SectionHeading>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                Many people know their data is being collected — but few understand how it is used, or what biases shape its interpretation. Surveillance capitalism turns human behavior into data that predicts and influences consumer behavior, often without meaningful consent or awareness.
+                Many people know their data is being collected - but few understand how it is used, or what biases shape its interpretation. Surveillance capitalism turns human behavior into data that predicts and influences consumer behavior, often without meaningful consent or awareness.
               </p>
               <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
                 The project began with a simple question: what if instead of reading about surveillance, you could feel it acting on you?
@@ -875,16 +865,16 @@ const UnseenExposures: React.FC<{ project: Project; prev: Project | null; next: 
             <div>
               <SectionHeading>The Approach</SectionHeading>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                The installation was structured around three distinct but connected machines, each addressing a different aspect of data analysis and its ethical implications. Visitors moved through them in sequence — becoming both subjects and observers of the same systems they use every day online.
+                The installation was structured around three distinct but connected machines, each addressing a different aspect of data analysis and its ethical implications. Visitors moved through them in sequence - becoming both subjects and observers of the same systems they use every day online.
               </p>
               <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                Each machine was built with accessible components — Arduino, Raspberry Pi, cameras, and sensors — combined with lightweight machine learning models to produce real-time feedback.
+                Each machine was built with accessible components - Arduino, Raspberry Pi, cameras, and sensors - combined with lightweight machine learning models to produce real-time feedback.
               </p>
             </div>
           </div>
         </AnimateOnScroll>
 
-        {/* The Three Machines — full editorial treatment */}
+        {/* The Three Machines - full editorial treatment */}
         <AnimateOnScroll className="mt-24">
           <SectionHeading>The Three Machines</SectionHeading>
           <div className="space-y-0 mt-8">
@@ -927,14 +917,14 @@ const UnseenExposures: React.FC<{ project: Project; prev: Project | null; next: 
         <AnimateOnScroll className="mt-24 bg-gray-50 dark:bg-gray-950 p-10 md:p-16">
           <SectionHeading>Ethical Questions at the Exhibition</SectionHeading>
           <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed max-w-2xl mb-10">
-            As part of the experience, visitors were asked to vote on four statements about technology, privacy and surveillance. The results were displayed in real time — adding another layer to the installation itself.
+            As part of the experience, visitors were asked to vote on four statements about technology, privacy and surveillance. The results were displayed in real time - adding another layer to the installation itself.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { statement: '"Privacy is dead. Get over it."', response: 'Majority disagreed — privacy still matters even when people feel powerless.' },
-              { statement: '"Privacy is not an option, and shouldn\'t be the price we pay for getting on the internet."', response: 'Strong agreement — digital access shouldn\'t require surrendering privacy.' },
-              { statement: '"If you have nothing to hide, you have nothing to fear."', response: 'Overwhelmingly rejected — people value privacy regardless of perceived significance.' },
-              { statement: '"Guns don\'t kill people, people kill people."', response: 'Mixed responses — used to spark debate about agency vs. systems of harm.' },
+              { statement: '"Privacy is dead. Get over it."', response: 'Majority disagreed - privacy still matters even when people feel powerless.' },
+              { statement: '"Privacy is not an option, and shouldn\'t be the price we pay for getting on the internet."', response: 'Strong agreement - digital access shouldn\'t require surrendering privacy.' },
+              { statement: '"If you have nothing to hide, you have nothing to fear."', response: 'Overwhelmingly rejected - people value privacy regardless of perceived significance.' },
+              { statement: '"Guns don\'t kill people, people kill people."', response: 'Mixed responses - used to spark debate about agency vs. systems of harm.' },
             ].map((q, i) => (
               <div key={i} className="border-l-2 border-gray-300 dark:border-gray-600 pl-5">
                 <p className="text-sm font-semibold text-black dark:text-brand-light font-sans mb-2">{q.statement}</p>
@@ -970,7 +960,7 @@ const UnseenExposures: React.FC<{ project: Project; prev: Project | null; next: 
           <div className="bg-gray-50 dark:bg-gray-950 p-8 self-start">
             <p className="text-xs uppercase tracking-widest text-brand-muted dark:text-gray-500 font-sans mb-4">Key Takeaway</p>
             <p className="text-lg font-semibold text-black dark:text-brand-light font-sans leading-snug">
-              "Technology critique works best when it's experiential — when people can feel surveillance acting on them, rather than only reading about it."
+              "Technology critique works best when it's experiential - when people can feel surveillance acting on them, rather than only reading about it."
             </p>
           </div>
         </AnimateOnScroll>
@@ -982,7 +972,7 @@ const UnseenExposures: React.FC<{ project: Project; prev: Project | null; next: 
             <iframe
               width="100%" height="100%"
               src="https://www.youtube.com/embed/iLEhcb6H73Q"
-              title="Unseen Exposures — {Un}Data Me"
+              title="Unseen Exposures - {Un}Data Me"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -1011,12 +1001,12 @@ const TaniaPilot: React.FC<{ project: Project; prev: Project | null; next: Proje
     {
       num: '02',
       title: 'Participatory Research',
-      text: 'Workshops captured personal stories about nighttime noise, coexistence and emotion. The goal was to translate lived experience — not just decibels — into something the system could understand.',
+      text: 'Workshops captured personal stories about nighttime noise, coexistence and emotion. The goal was to translate lived experience - not just decibels - into something the system could understand.',
     },
     {
       num: '03',
       title: 'RUT: The AI Persona',
-      text: 'An AI chatbot trained on community testimonies became "the voice of the square." RUT communicated in a tone reflecting empathy and local character — not a generic assistant, but a neighbor.',
+      text: 'An AI chatbot trained on community testimonies became "the voice of the square." RUT communicated in a tone reflecting empathy and local character - not a generic assistant, but a neighbor.',
     },
     {
       num: '04',
@@ -1053,7 +1043,7 @@ const TaniaPilot: React.FC<{ project: Project; prev: Project | null; next: Proje
               "Enough of Artificial Intelligence that flattens human complexity."
             </p>
             <p className="mt-6 text-base text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed">
-              We are flooded with technology that prioritizes cold efficiency and forgets the people it's supposed to serve. TÀNIA was built to challenge this — advocating for a community AI with cultural depth, context awareness, and a focus on social cohesion over quick metrics.
+              We are flooded with technology that prioritizes cold efficiency and forgets the people it's supposed to serve. TÀNIA was built to challenge this - advocating for a community AI with cultural depth, context awareness, and a focus on social cohesion over quick metrics.
             </p>
           </div>
         </AnimateOnScroll>
@@ -1067,7 +1057,7 @@ const TaniaPilot: React.FC<{ project: Project; prev: Project | null; next: Proje
                 {project.overview}
               </p>
               <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                Through a participatory process, residents of the Gràcia neighborhood contributed their testimonies and, together with other volunteers, brought a character to life — an AI persona named RUT that humanizes the environment and fosters respect and empathy among visitors to the plaza.
+                Through a participatory process, residents of the Gràcia neighborhood contributed their testimonies and, together with other volunteers, brought a character to life - an AI persona named RUT that humanizes the environment and fosters respect and empathy among visitors to the plaza.
               </p>
             </div>
           </div>
@@ -1107,16 +1097,16 @@ const TaniaPilot: React.FC<{ project: Project; prev: Project | null; next: Proje
             <div>
               <SectionHeading>The Challenge</SectionHeading>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                Barcelona's public squares often see clashes between nightlife, tourism, and residents. The city needed a way to mediate between sound and emotion — not just collect data, but translate it into constructive dialogue.
+                Barcelona's public squares often see clashes between nightlife, tourism, and residents. The city needed a way to mediate between sound and emotion - not just collect data, but translate it into constructive dialogue.
               </p>
               <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                The core challenge: how do you use technology as a social bridge? How can sensors and AI help residents, policymakers, and businesses hear each other — without reducing human complexity to a bar chart?
+                The core challenge: how do you use technology as a social bridge? How can sensors and AI help residents, policymakers, and businesses hear each other - without reducing human complexity to a bar chart?
               </p>
             </div>
             <div>
               <SectionHeading>What Made It Different</SectionHeading>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                Most noise monitoring projects stop at data. TÀNIA went further: the data was used to train a personality, not just generate alerts. RUT wasn't designed to replace human judgment — she was designed to carry community voices into places where those voices weren't being heard.
+                Most noise monitoring projects stop at data. TÀNIA went further: the data was used to train a personality, not just generate alerts. RUT wasn't designed to replace human judgment - she was designed to carry community voices into places where those voices weren't being heard.
               </p>
               <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
                 This is what <em>situated AI</em> means in practice: a system that understands where it operates, avoids generic algorithms, and respects the nuances and identities of the people it represents.
@@ -1160,10 +1150,10 @@ const TaniaPilot: React.FC<{ project: Project; prev: Project | null; next: Proje
             <div>
               <SectionHeading>Meet RUT</SectionHeading>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                RUT is the AI voice of Plaça de la Virreina. She was built on a GPT assistant trained with a local database of interviews and testimonies collected from neighbors — real stories, frustrations, and memories from the Gràcia neighborhood.
+                RUT is the AI voice of Plaça de la Virreina. She was built on a GPT assistant trained with a local database of interviews and testimonies collected from neighbors - real stories, frustrations, and memories from the Gràcia neighborhood.
               </p>
               <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                When noise levels rise, RUT doesn't generate a generic alert. She tells a story. She speaks with the warmth and complexity of the people whose voices she carries. Her messages were displayed on a screen in the plaza that continuously cycled her responses — making the data visible, human, and present in the space.
+                When noise levels rise, RUT doesn't generate a generic alert. She tells a story. She speaks with the warmth and complexity of the people whose voices she carries. Her messages were displayed on a screen in the plaza that continuously cycled her responses - making the data visible, human, and present in the space.
               </p>
               <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
                 RUT ran on a local server (no longer active) and was accessible via Telegram for its easy access and low barrier to entry for residents of all ages.
@@ -1216,7 +1206,7 @@ const TaniaPilot: React.FC<{ project: Project; prev: Project | null; next: Proje
                 icon: '📱',
                 title: 'Interface & Access',
                 items: [
-                  'Telegram Bot API — chosen for low barrier to entry',
+                  'Telegram Bot API - chosen for low barrier to entry',
                   'Flask web server running locally',
                   'Continuous display screen in the plaza cycling RUT\'s messages',
                   'Poster communication campaign in the neighborhood',
@@ -1228,7 +1218,7 @@ const TaniaPilot: React.FC<{ project: Project; prev: Project | null; next: Proje
                 items: [
                   'Google Drive & Google Sheets API for interaction logging',
                   'All conversations (text, image, audio) stored for analysis',
-                  'Local server deployment — community-owned infrastructure',
+                  'Local server deployment - community-owned infrastructure',
                   'Langchain integration for database querying (optional layer)',
                 ],
               },
@@ -1277,7 +1267,7 @@ const TaniaPilot: React.FC<{ project: Project; prev: Project | null; next: Proje
               <p className="text-lg font-semibold text-black dark:text-brand-light font-sans leading-snug">
                 "We don't need technology that replaces us or processes us as mere data. We need an AI that strengthens our collective intelligence and respects our diversity."
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 font-sans">— TÀNIA Project Manifesto</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 font-sans">- TÀNIA Project Manifesto</p>
             </div>
           </div>
         </AnimateOnScroll>
@@ -1303,7 +1293,7 @@ const CompostableAltar: React.FC<{ project: Project; prev: Project | null; next:
 
   return (
     <div className="pb-24">
-      {/* Hero — full bleed, no sidebar */}
+      {/* Hero - full bleed, no sidebar */}
       <div className="relative h-[70vh] overflow-hidden">
         <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -1364,7 +1354,7 @@ const CompostableAltar: React.FC<{ project: Project; prev: Project | null; next:
           </div>
         </AnimateOnScroll>
 
-        {/* Context + concept — horizontal images shown full width */}
+        {/* Context + concept - horizontal images shown full width */}
         <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">The Question</span>
           <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">What if design's value lay in its disappearance?</h2>
@@ -1373,7 +1363,7 @@ const CompostableAltar: React.FC<{ project: Project; prev: Project | null; next:
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">{project.needs}</p>
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.concept}</p>
             </div>
-            {/* 2-column image grid — context + 2 concept side by side */}
+            {/* 2-column image grid - context + 2 concept side by side */}
             <div className="grid grid-cols-2 gap-3">
               {images.map((img, i) => (
                 <Img key={i} src={img} alt={`Concept ${i + 1}`} className="w-full aspect-[3/4]" />
@@ -1382,7 +1372,7 @@ const CompostableAltar: React.FC<{ project: Project; prev: Project | null; next:
           </div>
         </AnimateOnScroll>
 
-        {/* Process — big first image + 2 stacked small on right */}
+        {/* Process - big first image + 2 stacked small on right */}
         {processImages.length > 0 && (
           <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
             <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Process</span>
@@ -1416,10 +1406,10 @@ const CompostableAltar: React.FC<{ project: Project; prev: Project | null; next:
           <div className="grid md:grid-cols-2 gap-16 items-start mb-12">
             <div>
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                For three months, soil sensors measured temperature, humidity, pH and nutrients in a pilot experiment exposed to outdoor conditions and automatic irrigation — simulating a small farm environment. The results revealed how the decomposing biomaterials enrich the soil, increase nutrient availability and improve moisture retention.
+                For three months, soil sensors measured temperature, humidity, pH and nutrients in a pilot experiment exposed to outdoor conditions and automatic irrigation - simulating a small farm environment. The results revealed how the decomposing biomaterials enrich the soil, increase nutrient availability and improve moisture retention.
               </p>
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-6 italic">
-                "The offering was not symbolic — it was measurable and regenerative."
+                "The offering was not symbolic - it was measurable and regenerative."
               </p>
               <div className="grid grid-cols-2 gap-px bg-gray-200 dark:bg-gray-800">
                 {soilMetrics.map((m, i) => (
@@ -1436,7 +1426,7 @@ const CompostableAltar: React.FC<{ project: Project; prev: Project | null; next:
                 Based on the sensor data, two predictive models were built to estimate how soil nutrients might change over time as biomaterial decomposes and is absorbed. Together, these tools convert experimental soil data into interactive, data-driven insights into how biomaterials affect soil regeneration.
               </p>
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-6 italic">
-                "AI does not seek to control, but to listen — translating the rhythms of the soil into possible futures."
+                "AI does not seek to control, but to listen - translating the rhythms of the soil into possible futures."
               </p>
               <a
                 href="https://carmenrobresdev.grafana.net/public-dashboards/2f0d_b1b6d794fd3bea7a44c23bf50f4"
@@ -1490,7 +1480,7 @@ const CompostableAltar: React.FC<{ project: Project; prev: Project | null; next:
             </div>
             <Img
               src="https://i.imgur.com/5rX8iDm.jpeg"
-              alt="La Materia Construida exhibition — Compostable Altar on display"
+              alt="La Materia Construida exhibition - Compostable Altar on display"
               className="w-full"
             />
           </div>
@@ -1542,17 +1532,17 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
   const outcomeImages = project.outcomeImages || [];
 
   const deliverables = [
-    { label: 'Packaging', items: ['Coffee bags — full range', 'Retail boxes & gift sets', 'Shipping & e-commerce materials'] },
+    { label: 'Packaging', items: ['Coffee bags - full range', 'Retail boxes & gift sets', 'Shipping & e-commerce materials'] },
     { label: 'Brand Assets', items: ['Campaign flyers & print', 'T-shirts & event materials', 'Retail display design'] },
     { label: 'Digital', items: ['Newsletter templates', 'Social media (IG, YouTube)', 'Promotional banners & ads'] },
     { label: 'Product', items: ['New coffee machine design support', 'Supplier coordination', 'Cross-team brand consistency'] },
   ];
 
-  // Aesthetic-only images — used as visual context, not content
+  // Aesthetic-only images - used as visual context, not content
   const aestheticHero = 'https://i.imgur.com/XiPjkwQ.jpeg';
   const aestheticContext = 'https://i.imgur.com/XRpZwgF.jpeg';
 
-  // All content images — shown fully as case study slides
+  // All content images - shown fully as case study slides
   const allContentImages = [...images, ...outcomeImages];
 
   return (
@@ -1560,7 +1550,7 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
 
       {/* ── HERO ── */}
       <div className="relative h-[70vh] overflow-hidden">
-        <img src={optimizeImage(aestheticHero, 1920)} alt={project.title} loading="eager" decoding="async" className="w-full h-full object-cover" />
+        <img src={aestheticHero} alt={project.title} loading="eager" decoding="async" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
           <AnimateOnScroll>
@@ -1656,13 +1646,13 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
           </div>
         </AnimateOnScroll>
 
-        {/* ── CASE STUDY — all images fully visible, Behance style ── */}
+        {/* ── CASE STUDY - all images fully visible, Behance style ── */}
         <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Work</span>
           <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-4">The Work</h2>
           <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mb-10">{project.outcome}</p>
 
-          {/* Each image full width — vertical scroll through the case study */}
+          {/* Each image full width - vertical scroll through the case study */}
           <div className="space-y-3">
             {allContentImages.map((img, i) => (
               <AnimateOnScroll key={i}>
@@ -1686,7 +1676,7 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
                 <div className="space-y-2">
                   {[
                     'Designing within a fast-paced e-commerce startup',
-                    'Full production management — digital to physical',
+                    'Full production management - digital to physical',
                     'Cross-team collaboration: marketing, manufacturing, logistics',
                     'Supplier coordination: printing, packaging, finishes',
                     'Consistent brand identity across all media',
