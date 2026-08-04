@@ -3,9 +3,13 @@ import { Link } from 'react-router-dom';
 import { projects } from '../../data';
 import ProjectCard from '../ProjectCard';
 import AnimateOnScroll from '../AnimateOnScroll';
-import GradientShimmer from '../GradientShimmer';
+import { gradientPresets } from '../GradientShimmer';
 
 const HIGHLIGHTED_PROJECT_IDS = ['compostable-altar', 'tania-pilot', 'miralls-del-dema'];
+
+const HERO_GLOW_BACKGROUND = `linear-gradient(105deg, ${gradientPresets.sunrise
+  .map(stop => `${stop.color} ${(stop.position * 100).toFixed(1)}%`)
+  .join(', ')})`;
 
 const HomePage: React.FC = () => {
   const featuredProjects = HIGHLIGHTED_PROJECT_IDS
@@ -18,9 +22,15 @@ const HomePage: React.FC = () => {
          {/* Hero Section */}
         <section className="min-h-[50vh] flex flex-col justify-center text-left">
           <AnimateOnScroll>
-            <div className="max-w-4xl">
+            <div className="relative max-w-4xl">
+              {/* Animated gradient glow behind the headline */}
+              <div
+                aria-hidden="true"
+                className="animate-hero-glow pointer-events-none absolute -inset-x-8 -inset-y-12 -z-10 rounded-[3rem] opacity-50 dark:opacity-30 blur-3xl"
+                style={{ backgroundImage: HERO_GLOW_BACKGROUND }}
+              />
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black dark:text-brand-light leading-tight font-sans">
-                  <GradientShimmer gradient="sunrise" className="font-bold">Hi</GradientShimmer>, I'm an Industrial Designer / Engineer /<br />
+                  Hi, I'm an Industrial Designer / Engineer /<br />
                   Researcher / Maker /<br />
                   Innovator <span className="font-sans italic text-4xl md:text-5xl lg:text-6xl font-normal ml-2">(kind of)</span>
               </h1>

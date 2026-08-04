@@ -16,8 +16,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
         />
       </div>
-      <div className="mt-4 text-left min-h-[5rem]">
+      <div className="mt-4 text-left min-h-[6.5rem]">
         <h3 className="text-lg font-medium text-black dark:text-brand-light group-hover:text-brand-muted dark:group-hover:text-gray-400 transition-colors duration-300 font-sans">{project.title}</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 leading-snug">{project.subtitle}</p>
         <p className="text-sm text-brand-muted dark:text-gray-400 mt-1 transition-all duration-300 group-hover:pl-1">
             <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">&rarr; </span>
             {project.category}
