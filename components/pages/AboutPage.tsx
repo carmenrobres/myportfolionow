@@ -19,7 +19,7 @@ const AboutPage: React.FC = () => {
                 <h1 className="text-4xl sm:text-5xl font-bold tracking-tight font-sans text-black dark:text-brand-light">Carmen Robres De Veciana</h1>
                 <h2 className="text-2xl sm:text-3xl font-medium text-gray-800 dark:text-gray-200 mt-1 font-sans">Industrial Design Engineer</h2>
                 <p className="mt-6 text-base text-gray-700 dark:text-gray-300 max-w-xl">
-                Industrial designer passionate about integrating new technologies, currently focused on integrating AI into the prototyping process. Through my Master's, I explored innovative ways to merge design and tech, pushing the boundaries of creativity and functionality.
+                Industrial Design Engineer and Innovation professional working at the intersection of technology, design and applied research. My experience spans product design, emerging technologies, AI applications and innovation projects, transforming ideas into tangible solutions through collaboration, experimentation and prototyping. I currently work as Innovation Officer at BSC, connecting deep tech research with real-world applications, with a particular interest in sustainability, open innovation and applied prototyping.
                 </p>
                 <div className="text-sm mt-6">
                   <h3 className="font-semibold text-black dark:text-brand-light">Contact</h3>
@@ -52,13 +52,8 @@ const AboutPage: React.FC = () => {
              </div>
              <div>
                 <h3 className="font-semibold text-black dark:text-brand-light">Junior Designer, Incapto Coffee</h3>
-                <p className="text-sm text-brand-muted dark:text-gray-400">June 2022 - June 2023</p>
+                <p className="text-sm text-brand-muted dark:text-gray-400">June 2021 - June 2023</p>
                 <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">Project management for B2B, including the development of print and digital materials (catalogs, packaging, newsletters, banners, social media content), campaign concepts, retail designs, and ad creation with copywriting.</p>
-             </div>
-             <div>
-                <h3 className="font-semibold text-black dark:text-brand-light">Junior Trainee, Incapto Coffee</h3>
-                <p className="text-sm text-brand-muted dark:text-gray-400">June 2021 - June 2022</p>
-                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">Design and development of print materials (catalogs, manuals, flyers, packaging) and digital content (newsletters, promotional banners, social media for Instagram and YouTube).</p>
              </div>
           </div>
         </div>

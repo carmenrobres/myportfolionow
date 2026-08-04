@@ -4,8 +4,12 @@ import { projects } from '../../data';
 import ProjectCard from '../ProjectCard';
 import AnimateOnScroll from '../AnimateOnScroll';
 
+const HIGHLIGHTED_PROJECT_IDS = ['compostable-altar', 'tania-pilot', 'miralls-del-dema'];
+
 const HomePage: React.FC = () => {
-  const featuredProjects = projects.slice(0, 3);
+  const featuredProjects = HIGHLIGHTED_PROJECT_IDS
+    .map(id => projects.find(p => p.id === id))
+    .filter((p): p is typeof projects[number] => Boolean(p));
 
   return (
     <div className="space-y-24 md:space-y-40 pb-24 md:pb-40">
