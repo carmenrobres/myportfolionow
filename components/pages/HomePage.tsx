@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { projects } from '../../data';
 import ProjectCard from '../ProjectCard';
 import AnimateOnScroll from '../AnimateOnScroll';
+import GradientShimmer from '../GradientShimmer';
 
 const HIGHLIGHTED_PROJECT_IDS = ['compostable-altar', 'tania-pilot', 'miralls-del-dema'];
 
@@ -19,7 +20,7 @@ const HomePage: React.FC = () => {
           <AnimateOnScroll>
             <div className="max-w-4xl">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black dark:text-brand-light leading-tight font-sans">
-                  Hi, I'm an Industrial Designer / Engineer /<br />
+                  <GradientShimmer gradient="sunrise" className="font-bold">Hi</GradientShimmer>, I'm an Industrial Designer / Engineer /<br />
                   Researcher / Maker /<br />
                   Innovator <span className="font-sans italic text-4xl md:text-5xl lg:text-6xl font-normal ml-2">(kind of)</span>
               </h1>
