@@ -76,16 +76,16 @@ const renderContent = (content: string | string[] | undefined, isProcess = false
 };
 
 // Clickable image
-const Img: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className = '' }) => {
+const Img: React.FC<{ src: string; alt: string; className?: string; fit?: 'cover' | 'contain' }> = ({ src, alt, className = '', fit = 'cover' }) => {
   const { showLightbox } = useLightbox();
   return (
-    <button onClick={() => showLightbox(src)} className={`block cursor-zoom-in overflow-hidden group ${className}`}>
+    <button onClick={() => showLightbox(src)} className={`block cursor-zoom-in overflow-hidden group ${fit === 'contain' ? 'bg-white dark:bg-brand-black p-6 md:p-10' : ''} ${className}`}>
       <img
         src={src}
         alt={alt}
         loading="lazy"
         decoding="async"
-        className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+        className={`w-full h-full ${fit === 'contain' ? 'object-contain' : 'object-cover group-hover:scale-[1.03] transition-transform duration-500'}`}
       />
     </button>
   );
@@ -137,6 +137,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
     {
       num: '01', title: 'AI Tools vs. Maker Level',
       img: images[0],
+      imgFit: 'contain' as const,
       text: 'This graph plots AI tools across two axes: maker experience level (low → high) and output type (digital vs. physical fabrication). The key finding: most AI tools are built for expert users - but makerspaces host all skill levels, mostly beginners. This mismatch became the core problem to solve.',
     },
     {
@@ -152,6 +153,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
     {
       num: '04', title: 'Barcelona Makerspaces Network',
       img: images[4],
+      imgFit: 'contain' as const,
       text: 'Map of fab labs and makerspaces in Barcelona showing the three collaborating spaces: Fablab Barcelona (institutional), Ateneu de Gràcia (community-run), and Fab Casa del Mig (neighbourhood). Each had a different making culture - which shaped how AI tools were received.',
     },
   ];
@@ -173,12 +175,14 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
       label: 'Deep Dive', title: 'Prompt Engineering for Fabrication',
       images: ['https://i.imgur.com/dCM4NXt.jpeg', 'https://i.imgur.com/iHJK1UI.jpeg'],
       captions: ['Fabrication-oriented prompt example 1', 'Fabrication-oriented prompt example 2'],
+      imagesLayout: 'row' as const,
       text: 'Prompt quality has a direct impact on fabricability. A generic prompt produces geometry full of errors and wrong scale. A prompt that includes material context, fabrication method, and constraints produces something far closer to printable. I developed prompt templates specifically for makers - giving them language to communicate fabrication intent, not just aesthetic intent.',
     },
     {
       label: 'Self-Built Tool', title: 'AI 3D Prompt Generator',
       images: ['https://i.imgur.com/6lcJSA0.jpeg', 'https://i.imgur.com/3Wp1GO2.jpeg'],
       captions: ['The tool interface - guides mesh vs CAD choice', 'Mesh quality: good context prompt vs. generic prompt'],
+      imagesLayout: 'row' as const,
       text: 'I built my own tool from scratch to make prompt engineering accessible to non-technical makers. It guides users through choosing between mesh-based modeling (organic forms) and CAD-style modeling (precise geometry) - then generates a fabrication-aware prompt tailored to that choice.',
     },
   ];
@@ -206,9 +210,11 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
 
   // All cards shown stacked - no click required to read each one
   const CardGrid: React.FC<{
-    cards: { num?: string; label?: string; title: string; img?: string; images?: string[]; captions?: string[]; text: string }[];
-    stackImages?: boolean;
-  }> = ({ cards, stackImages = false }) => (
+    cards: {
+      num?: string; label?: string; title: string; img?: string; images?: string[]; captions?: string[]; text: string;
+      imgFit?: 'cover' | 'contain'; imagesLayout?: 'stack' | 'row';
+    }[];
+  }> = ({ cards }) => (
     <div className="space-y-6">
       {cards.map((card, idx) => {
         const imgs = card.images ?? (card.img ? [card.img] : []);
@@ -217,20 +223,20 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
           <div key={idx} className="border border-gray-200 dark:border-gray-800 grid md:grid-cols-2">
             {/* Images side */}
             <div className="bg-gray-50 dark:bg-gray-950 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800">
-              {imgs.length === 0 ? null : stackImages ? (
-                <div className="divide-y divide-gray-200 dark:divide-gray-800">
+              {imgs.length === 0 ? null : imgs.length > 1 ? (
+                <div className={card.imagesLayout === 'row' ? 'grid grid-cols-2 gap-px' : 'divide-y divide-gray-200 dark:divide-gray-800'}>
                   {imgs.map((img, i) => (
                     <div key={i}>
                       <Img src={img} alt={captions[i] ?? `Image ${i + 1}`} className="w-full" />
                       {captions[i] && (
-                        <p className="px-5 py-2.5 text-xs text-gray-500 dark:text-gray-400 italic">{captions[i]}</p>
+                        <p className="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 italic">{captions[i]}</p>
                       )}
                     </div>
                   ))}
                 </div>
               ) : (
                 <div>
-                  <Img src={imgs[0]} alt={captions[0] ?? card.title} className="w-full" />
+                  <Img src={imgs[0]} alt={captions[0] ?? card.title} className="w-full" fit={card.imgFit} />
                   {captions[0] && (
                     <p className="px-5 py-2.5 text-xs text-gray-500 dark:text-gray-400 italic border-t border-gray-200 dark:border-gray-800">{captions[0]}</p>
                   )}
@@ -367,7 +373,7 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
                 Every AI tool was evaluated not just on screen - but on whether it could actually produce something fabricable with makerspace machines.
               </p>
             </div>
-            <CardGrid cards={experiments} stackImages />
+            <CardGrid cards={experiments} />
           </AnimateOnScroll>
         </section>
 
