@@ -291,6 +291,10 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
             <p className="text-xs uppercase tracking-widest text-white/60 mb-3 font-sans">MDEF Thesis Year 2 · {project.year}</p>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter uppercase text-white font-sans leading-none max-w-4xl">{project.title}</h1>
             <p className="mt-3 text-lg text-white/70 max-w-2xl font-sans">{project.subtitle}</p>
+            <a href={project.externalLink} target="_blank" rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 bg-white text-black px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors font-sans">
+              Download Thesis ↓
+            </a>
           </AnimateOnScroll>
         </div>
       </div>
@@ -304,10 +308,6 @@ const FutureOfDesigning: React.FC<{ project: Project; prev: Project | null; next
             <span><strong className="text-black dark:text-brand-light">Year</strong> {project.year}</span>
             <span><strong className="text-black dark:text-brand-light">Context</strong> MDEF · Elisava & IAAC</span>
             <span><strong className="text-black dark:text-brand-light">Partners</strong> Fablab Barcelona · Ateneu de Gràcia · Fab Casa del Mig</span>
-            <a href={project.externalLink} target="_blank" rel="noopener noreferrer"
-              className="text-black dark:text-brand-light underline hover:text-brand-muted dark:hover:text-gray-400 transition-colors">
-              Download Thesis →
-            </a>
           </div>
           <PhaseNav />
         </AnimateOnScroll>
