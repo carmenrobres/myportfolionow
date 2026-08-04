@@ -9,7 +9,7 @@ export const projects: Project[] = [
     category: ProjectCategory.AI_RESEARCH,
     image: "https://i.imgur.com/I31vUcU.jpeg",
     featured: true,
-    externalLink: "https://drive.google.com/file/d/1juStyQWYThfrOvORRxUESVQVDwKa3SpP/view?usp=sharing",
+    externalLink: "https://www.linkedin.com/in/carmen-robres-de-veciana-9b2b481b2/overlay/Project/1047850442/treasury?profileId=ACoAADGlo5YBWDO6j5ruSL_sfIRDiKR0SHNDJmo",
     images: [
       "https://i.imgur.com/QFUcYG2.jpeg",
       "https://i.imgur.com/2LCoTVn.jpeg",

@@ -75,7 +75,10 @@ const ProjectsPage: React.FC = () => {
                   onMouseLeave={() => setHoveredImage(null)}
                 >
                   <div className="flex justify-between items-center py-6 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300 group-hover:bg-brand-olive-light dark:group-hover:bg-brand-dark-gray/50">
-                    <h3 className="text-xl md:text-3xl font-medium text-black dark:text-brand-light transition-all duration-300 group-hover:pl-4 w-1/2 font-sans">{project.title}</h3>
+                    <div className="w-1/2 transition-all duration-300 group-hover:pl-4">
+                      <h3 className="text-xl md:text-3xl font-medium text-black dark:text-brand-light font-sans">{project.title}</h3>
+                      <p className="mt-1 text-sm text-brand-muted dark:text-gray-400 normal-case tracking-normal font-sans">{project.subtitle}</p>
+                    </div>
                     <div className="flex items-center space-x-8 text-sm text-brand-muted dark:text-gray-400 uppercase tracking-wider w-1/2 justify-end pr-4">
                       <span className="hidden md:inline w-1/3 text-right">{project.category}</span>
                       <span className="w-24 text-right">{project.year}</span>
