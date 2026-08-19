@@ -162,18 +162,11 @@ Through Unseen Exposures, I explored how art, data, and AI can meet in a space t
     images: [
       `${ROBOTIC_BIOPRINTING_IMG}material-recipe-label.jpg`,
       `${ROBOTIC_BIOPRINTING_IMG}material-mixing-batch.jpg`,
-      `${ROBOTIC_BIOPRINTING_IMG}material-hand-extrusion-test.jpg`,
-      `${ROBOTIC_BIOPRINTING_IMG}material-extruded-strands.jpg`,
-      `${ROBOTIC_BIOPRINTING_IMG}material-lab-rig.jpg`,
-      `${ROBOTIC_BIOPRINTING_IMG}material-cork-granules.jpg`,
     ],
     processImages: [
       `${ROBOTIC_BIOPRINTING_IMG}cover-robot-printing.jpg`,
-      `${ROBOTIC_BIOPRINTING_IMG}software-rhino-render.jpg`,
       `${ROBOTIC_BIOPRINTING_IMG}software-rhino-slicing.jpg`,
-      `${ROBOTIC_BIOPRINTING_IMG}software-grasshopper.jpg`,
       `${ROBOTIC_BIOPRINTING_IMG}software-rhino-robot-sim.jpg`,
-      `${ROBOTIC_BIOPRINTING_IMG}process-iteration-analysis.jpg`,
     ],
     outcomeImages: [
       `${ROBOTIC_BIOPRINTING_IMG}outcome-render-interior.jpg`,
@@ -183,7 +176,7 @@ Through Unseen Exposures, I explored how art, data, and AI can meet in a space t
       `${ROBOTIC_BIOPRINTING_IMG}outcome-printed-detail.jpg`,
       `${ROBOTIC_BIOPRINTING_IMG}outcome-cost-breakdown.jpg`,
     ],
-    overview: "This was my first hands-on experience with robotic 3D printing: a one-week seminar at IAAC exploring non-planar additive manufacturing with a 6-axis industrial robot. Working in a team of seven, we designed and 3D printed a stool using a biomaterial made from cork recycled from wine stoppers, running our own structural topology optimization, angle-deformation study and multi-day print-testing cycle to get a non-planar, undercut-heavy form to actually stand up in a live, still-curing material.",
+    overview: "A one-week seminar at IAAC exploring non-planar additive manufacturing with a 6-axis industrial robot. Working in a team of seven, we designed and 3D printed a stool using a biomaterial made from cork recycled from wine stoppers, running our own structural topology optimization, angle-deformation study and multi-day print-testing cycle to get a non-planar, undercut-heavy form to actually stand up in a live, still-curing material.",
     industry: ["Robotic Fabrication", "Digital Fabrication", "Biomaterials", "Computational Design"],
     service: ["Topology Optimization", "Robot Programming", "Material Research", "Prototyping"],
     learnings: "Learned to program and simulate a 6-axis industrial robot (ABB IRB 6700) for additive manufacturing, formulate and mix a printable cork-based biomaterial from scratch, slice a topology-optimized mesh into a non-planar toolpath in Rhino/Grasshopper, and read a live print's failures (collapsing legs, shifting seams) back into geometry and process changes in real time.",
