@@ -1887,13 +1887,13 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
           </div>
           {processImages.length > 0 && (
             <div className="grid sm:grid-cols-2 gap-3 mb-3">
-              {processImages.slice(0, 4).map((img, i) => (
-                <Img key={i} src={img} alt={`Rhino and Grasshopper workflow ${i + 1}`} className="w-full aspect-[4/3]" />
+              {processImages.slice(0, -1).map((img, i) => (
+                <Img key={i} src={img} alt={`Robot printing and Rhino/Grasshopper workflow ${i + 1}`} className="w-full aspect-[4/3]" />
               ))}
             </div>
           )}
-          {processImages[4] && (
-            <Img src={processImages[4]} alt="Iteration analysis across print attempts" className="w-full" />
+          {processImages.length > 0 && (
+            <Img src={processImages[processImages.length - 1]} alt="Iteration analysis across print attempts" className="w-full" />
           )}
         </AnimateOnScroll>
 

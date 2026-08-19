@@ -157,7 +157,7 @@ Through Unseen Exposures, I explored how art, data, and AI can meet in a space t
     subtitle: "MRAC Workshop 1.1: Bio-Additive Manufacturing with Recycled Cork",
     year: "2024",
     category: ProjectCategory.ROBOTICS_FABRICATION,
-    image: `${ROBOTIC_BIOPRINTING_IMG}cover-robot-printing.jpg`,
+    image: "https://i.imgur.com/GQVm1MV.jpeg",
     externalLink: "https://blog.iaac.net/bio-additive-manufacturing-mrac-workshop-1-1/",
     images: [
       `${ROBOTIC_BIOPRINTING_IMG}material-recipe-label.jpg`,
@@ -168,6 +168,7 @@ Through Unseen Exposures, I explored how art, data, and AI can meet in a space t
       `${ROBOTIC_BIOPRINTING_IMG}material-cork-granules.jpg`,
     ],
     processImages: [
+      `${ROBOTIC_BIOPRINTING_IMG}cover-robot-printing.jpg`,
       `${ROBOTIC_BIOPRINTING_IMG}software-rhino-render.jpg`,
       `${ROBOTIC_BIOPRINTING_IMG}software-rhino-slicing.jpg`,
       `${ROBOTIC_BIOPRINTING_IMG}software-grasshopper.jpg`,
