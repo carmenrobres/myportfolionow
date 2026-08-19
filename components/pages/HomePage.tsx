@@ -7,35 +7,43 @@ import Floating, { FloatingElement } from '../ui/parallax-floating';
 
 const HIGHLIGHTED_PROJECT_IDS = ['compostable-altar', 'tania-pilot', 'miralls-del-dema'];
 
-const HERO_FLOATERS: { image: { src: string; alt: string }; className: string; depth: number; size: string }[] = projects.map((p, i) => {
-  // Kept to the right half of the hero so nothing crosses the headline on the left.
-  const positions = [
-    'top-[6%] left-[58%]',
-    'top-[4%] left-[80%]',
-    'top-[26%] left-[93%]',
-    'top-[42%] left-[62%]',
-    'top-[58%] left-[82%]',
-    'top-[74%] left-[60%]',
-    'top-[86%] left-[84%]',
-  ];
-  const depths = [0.5, 1.5, 2.5, 1.2, 1, 2, 0.8];
-  const sizes = [
-    'w-16 h-16 md:w-24 md:h-24',
-    'w-20 h-20 md:w-28 md:h-28',
-    'w-24 h-32 md:w-32 md:h-40',
-    'w-24 h-24 md:w-32 md:h-32',
-    'w-24 h-24 md:w-32 md:h-32',
-    'w-24 h-32 md:w-32 md:h-44',
-    'w-20 h-20 md:w-28 md:h-28',
-  ];
-  const idx = i % positions.length;
-  return {
-    image: { src: p.image, alt: p.title },
-    className: positions[idx],
-    depth: depths[idx],
-    size: sizes[idx],
-  };
-});
+// Layout for each floating project photo, positioned as a percentage of the
+// (right-half only, see HeroFloaters below) hero image rail - not the full
+// hero width - so parallax drift can never reach the headline on the left.
+const FLOATER_LAYOUT = [
+  { position: 'top-[6%] left-[16%]', depth: 0.5, size: 'w-16 h-16 md:w-24 md:h-24' },
+  { position: 'top-[4%] left-[60%]', depth: 1.5, size: 'w-20 h-20 md:w-28 md:h-28' },
+  { position: 'top-[26%] left-[86%]', depth: 2.5, size: 'w-24 h-32 md:w-32 md:h-40' },
+  { position: 'top-[42%] left-[24%]', depth: 1.2, size: 'w-24 h-24 md:w-32 md:h-32' },
+  { position: 'top-[58%] left-[64%]', depth: 1, size: 'w-24 h-24 md:w-32 md:h-32' },
+  { position: 'top-[74%] left-[20%]', depth: 2, size: 'w-24 h-32 md:w-32 md:h-44' },
+  { position: 'top-[86%] left-[68%]', depth: 0.8, size: 'w-20 h-20 md:w-28 md:h-28' },
+];
+
+const HERO_FLOATERS = projects.map((project, i) => ({
+  image: { src: project.image, alt: project.title },
+  ...FLOATER_LAYOUT[i % FLOATER_LAYOUT.length],
+}));
+
+const HeroFloaters: React.FC = () => (
+  // Clips the rail at the right half of the hero, so a card can never drift
+  // past this edge and cover the headline, however far the mouse moves.
+  <div className="absolute inset-y-0 right-0 w-1/2 overflow-hidden">
+    <Floating sensitivity={-1}>
+      {HERO_FLOATERS.map((floater, i) => (
+        <FloatingElement key={i} depth={floater.depth} className={floater.position}>
+          <img
+            src={floater.image.src}
+            alt={floater.image.alt}
+            loading="eager"
+            decoding="async"
+            className={`${floater.size} object-cover hover:scale-105 duration-200 cursor-pointer transition-transform`}
+          />
+        </FloatingElement>
+      ))}
+    </Floating>
+  </div>
+);
 
 const HomePage: React.FC = () => {
   const featuredProjects = HIGHLIGHTED_PROJECT_IDS
@@ -54,19 +62,7 @@ const HomePage: React.FC = () => {
     <div className="space-y-24 md:space-y-40 pb-24 md:pb-40">
       {/* Hero Section - parallax floating project images */}
       <section className="relative min-h-[70vh] md:min-h-[85vh] w-full overflow-hidden">
-        <Floating sensitivity={-1}>
-          {HERO_FLOATERS.map((f, i) => (
-            <FloatingElement key={i} depth={f.depth} className={f.className}>
-              <img
-                src={f.image.src}
-                alt={f.image.alt}
-                loading="eager"
-                decoding="async"
-                className={`${f.size} object-cover hover:scale-105 duration-200 cursor-pointer transition-transform`}
-              />
-            </FloatingElement>
-          ))}
-        </Floating>
+        <HeroFloaters />
 
         <div className="relative z-10 flex h-full min-h-[70vh] md:min-h-[85vh] flex-col justify-between py-16 md:py-20 pointer-events-none">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto">
@@ -86,7 +82,7 @@ const HomePage: React.FC = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Highlights Section */}
-        <AnimateOnScroll as="section" className="pt-24">
+        <AnimateOnScroll as="section">
           <div className="flex justify-between items-end mb-12">
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-black dark:text-brand-light font-sans">Featured Work</h2>
               <Link to="/projects" className="text-black dark:text-brand-light hover:text-brand-muted dark:hover:text-gray-400 uppercase tracking-wider text-sm font-medium">See All &rarr;</Link>
