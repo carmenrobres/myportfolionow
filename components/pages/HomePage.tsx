@@ -1,13 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { projects } from '../../data';
 import ProjectCard from '../ProjectCard';
 import AnimateOnScroll from '../AnimateOnScroll';
-import { ImageStreamHero } from '../ui/image-stream-hero';
+import Floating, { FloatingElement } from '../ui/parallax-floating';
 
 const HIGHLIGHTED_PROJECT_IDS = ['compostable-altar', 'tania-pilot', 'miralls-del-dema'];
 
-const HERO_IMAGES = projects.map(p => ({ src: p.image, alt: p.title }));
+const HERO_FLOATERS: { image: { src: string; alt: string }; className: string; depth: number; size: string }[] = projects.map((p, i) => {
+  const positions = [
+    'top-[8%] left-[6%]',
+    'top-[12%] left-[27%]',
+    'top-[3%] left-[47%]',
+    'top-[2%] left-[80%]',
+    'top-[64%] left-[4%]',
+    'top-[68%] left-[81%]',
+    'top-[80%] left-[44%]',
+  ];
+  const depths = [0.5, 1.5, 2.5, 1.2, 1, 2, 0.8];
+  const sizes = [
+    'w-16 h-16 md:w-24 md:h-24',
+    'w-20 h-20 md:w-28 md:h-28',
+    'w-28 h-36 md:w-36 md:h-44',
+    'w-24 h-24 md:w-32 md:h-32',
+    'w-28 h-28 md:w-36 md:h-36',
+    'w-28 h-36 md:w-36 md:h-48',
+    'w-24 h-24 md:w-32 md:h-32',
+  ];
+  const idx = i % positions.length;
+  return {
+    image: { src: p.image, alt: p.title },
+    className: positions[idx],
+    depth: depths[idx],
+    size: sizes[idx],
+  };
+});
 
 const HomePage: React.FC = () => {
   const featuredProjects = HIGHLIGHTED_PROJECT_IDS
@@ -15,12 +42,33 @@ const HomePage: React.FC = () => {
     .filter((p): p is typeof projects[number] => Boolean(p));
   const otherProjects = projects.filter(p => !HIGHLIGHTED_PROJECT_IDS.includes(p.id));
 
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setMousePosition({ x: e.clientX + 20, y: e.clientY });
+  };
+
   return (
     <div className="space-y-24 md:space-y-40 pb-24 md:pb-40">
-      {/* Hero Section - full bleed image corridor */}
-      <ImageStreamHero images={HERO_IMAGES} axis={62} cards={10} className="min-h-[70vh] md:min-h-[85vh] w-full">
-        <div className="relative z-10 flex h-full min-h-[70vh] md:min-h-[85vh] flex-col justify-between py-16 md:py-20">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - parallax floating project images */}
+      <section className="relative min-h-[70vh] md:min-h-[85vh] w-full overflow-hidden">
+        <Floating sensitivity={-1}>
+          {HERO_FLOATERS.map((f, i) => (
+            <FloatingElement key={i} depth={f.depth} className={f.className}>
+              <img
+                src={f.image.src}
+                alt={f.image.alt}
+                loading="eager"
+                decoding="async"
+                className={`${f.size} object-cover hover:scale-105 duration-200 cursor-pointer transition-transform`}
+              />
+            </FloatingElement>
+          ))}
+        </Floating>
+
+        <div className="relative z-10 flex h-full min-h-[70vh] md:min-h-[85vh] flex-col justify-between py-16 md:py-20 pointer-events-none">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto">
             <AnimateOnScroll>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black dark:text-brand-light leading-tight font-sans">
                   Hi :) I'm an Engineer,<br />
@@ -30,11 +78,11 @@ const HomePage: React.FC = () => {
               </h1>
             </AnimateOnScroll>
           </div>
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto">
             <Link to="/projects" className="text-black dark:text-brand-light hover:text-brand-muted dark:hover:text-gray-400 uppercase tracking-wider text-sm font-medium">See My Work &rarr;</Link>
           </div>
         </div>
-      </ImageStreamHero>
+      </section>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Highlights Section */}
@@ -56,10 +104,15 @@ const HomePage: React.FC = () => {
         {otherProjects.length > 0 && (
           <AnimateOnScroll as="section" className="pt-16">
             <h3 className="text-xs uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans mb-6">More Projects</h3>
-            <div className="border-t border-gray-200 dark:border-gray-700">
+            <div className="border-t border-gray-200 dark:border-gray-700" onMouseMove={handleMouseMove}>
               {otherProjects.map((project, index) => (
                 <AnimateOnScroll key={project.id} stagger={index * 50}>
-                  <Link to={`/projects/${project.id}`} className="block group">
+                  <Link
+                    to={`/projects/${project.id}`}
+                    className="block group"
+                    onMouseEnter={() => setHoveredImage(project.image)}
+                    onMouseLeave={() => setHoveredImage(null)}
+                  >
                     <div className="flex justify-between items-center py-5 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300 group-hover:bg-brand-olive-light dark:group-hover:bg-brand-dark-gray/50">
                       <div className="w-1/2 transition-all duration-300 group-hover:pl-4">
                         <h4 className="text-lg md:text-xl font-medium text-black dark:text-brand-light font-sans">{project.title}</h4>
@@ -93,6 +146,23 @@ const HomePage: React.FC = () => {
           </div>
         </AnimateOnScroll>
       </div>
+
+      {hoveredImage && (
+        <div
+          className="pointer-events-none fixed z-50 transition-opacity duration-300"
+          style={{
+            left: mousePosition.x,
+            top: mousePosition.y,
+            transform: 'translateY(-50%)',
+          }}
+        >
+          <img
+            src={hoveredImage}
+            alt="Project preview"
+            className="w-72 h-auto object-cover rounded-lg shadow-2xl"
+          />
+        </div>
+      )}
     </div>
   );
 };
