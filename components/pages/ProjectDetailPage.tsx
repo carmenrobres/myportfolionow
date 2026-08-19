@@ -1704,6 +1704,169 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
   );
 };
 
+// ─── PROJECT 7: Non-Planar Robotic 3D Bio-Printing (Robotics / Fabrication) ───
+const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; next: Project | null }> = ({ project, prev, next }) => {
+  const images = project.images || [];
+  const processImages = project.processImages || [];
+  const outcomeImages = project.outcomeImages || [];
+
+  const printSpecs = [
+    { label: 'Robot', detail: 'ABB IRB 6700 - 6-axis industrial arm fitted with a WASP pump extruder' },
+    { label: 'Material', detail: 'Recycled cork powder + gelatine, xanthan gum, pectin & bicarbonate paste' },
+    { label: 'Layer settings', detail: '5mm layer height, 1.5cm width, robot speed tuned from 5% up to 35%' },
+    { label: 'Production', detail: '~4.8kg material and ~130 min combined robot + labor time per piece' },
+  ];
+
+  return (
+    <div className="pb-24">
+      {/* Hero - full bleed */}
+      <div className="relative h-[70vh] overflow-hidden">
+        <img src={project.image} alt={project.title} loading="eager" decoding="async" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 p-8 md:p-12">
+          <AnimateOnScroll>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-white/60 mb-3 font-sans">Robotic Fabrication · {project.year}</p>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter uppercase text-white font-sans leading-none">
+              Non-Planar<br />Bio-Printing
+            </h1>
+            <p className="mt-3 text-base text-white/70 font-sans max-w-lg">{project.subtitle}</p>
+          </AnimateOnScroll>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <AnimateOnScroll>
+          <Link to="/projects" className="mb-10 inline-block text-brand-muted dark:text-gray-400 hover:text-black dark:hover:text-brand-light transition-colors uppercase text-sm tracking-wider font-sans">← All Projects</Link>
+          <div className="flex flex-wrap gap-x-8 gap-y-2 text-xs uppercase tracking-wider text-brand-muted dark:text-gray-400 font-sans">
+            <span><strong className="text-black dark:text-brand-light">Year</strong> {project.year}</span>
+            <span><strong className="text-black dark:text-brand-light">Programme</strong> IAAC · Master in Robotics &amp; Advanced Construction</span>
+            {project.externalLink && (
+              <a href={project.externalLink} target="_blank" rel="noopener noreferrer"
+                className="text-black dark:text-brand-light underline hover:text-brand-muted dark:hover:text-gray-400 transition-colors">
+                View Workshop Documentation →
+              </a>
+            )}
+          </div>
+        </AnimateOnScroll>
+
+        {/* Overview + meta */}
+        <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+          <div className="grid md:grid-cols-3 gap-12">
+            <div className="md:col-span-2">
+              <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Overview</span>
+              <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">My First Robotic 3D Print</h2>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.overview}</p>
+            </div>
+            <div className="text-sm space-y-5 border-l border-gray-200 dark:border-gray-700 pl-8">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-2">Team</p>
+                <p className="text-gray-700 dark:text-gray-300">{project.collaborators}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-2">Services</p>
+                <p className="text-gray-700 dark:text-gray-300">{project.service.join(' · ')}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-2">Learnings</p>
+                <p className="text-gray-700 dark:text-gray-300 italic">{project.learnings}</p>
+              </div>
+            </div>
+          </div>
+        </AnimateOnScroll>
+
+        {/* Brief + concept, with material/process image grid */}
+        <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">The Brief</span>
+          <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">Beyond Flat Layers</h2>
+          <div className="grid md:grid-cols-2 gap-16 items-start">
+            <div>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">{project.needs}</p>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.concept}</p>
+            </div>
+            {images.length > 0 && (
+              <div className="grid grid-cols-2 gap-3">
+                {images.map((img, i) => (
+                  <Img key={i} src={img} alt={`Material and robot testing ${i + 1}`} className="w-full aspect-[3/4]" />
+                ))}
+              </div>
+            )}
+          </div>
+        </AnimateOnScroll>
+
+        {/* Process + print specs */}
+        <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Process</span>
+          <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-10">From Topology Optimization to Toolpath</h2>
+          <div className="grid md:grid-cols-2 gap-12 mb-12">
+            <div>{renderContent(project.process, true)}</div>
+            <div className="grid grid-cols-2 gap-px bg-gray-200 dark:bg-gray-800 self-start">
+              {printSpecs.map((m, i) => (
+                <div key={i} className="bg-white dark:bg-black p-5">
+                  <p className="font-bold text-black dark:text-brand-light font-sans text-sm mb-1">{m.label}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{m.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          {processImages.length > 0 && (
+            <div className="space-y-3">
+              {processImages.map((img, i) => (
+                <AnimateOnScroll key={i}>
+                  <Img src={img} alt={`Design and fabrication process ${i + 1}`} className="w-full" />
+                </AnimateOnScroll>
+              ))}
+            </div>
+          )}
+        </AnimateOnScroll>
+
+        {/* Outcome */}
+        {outcomeImages.length > 0 && (
+          <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Outcome</span>
+            <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-4">A Printable Non-Planar Stool</h2>
+            <div className="max-w-2xl mb-8">{renderContent(project.outcome)}</div>
+            <div className="grid grid-cols-3 gap-3">
+              {outcomeImages.map((img, i) => (
+                <Img key={i} src={img} alt={`Outcome ${i + 1}`} className={`w-full ${i === 0 ? 'col-span-3 aspect-[21/9]' : 'aspect-square'}`} />
+              ))}
+            </div>
+          </AnimateOnScroll>
+        )}
+
+        {/* Reflection */}
+        {project.reflection && (
+          <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+            <div className="grid md:grid-cols-2 gap-16">
+              <div>
+                <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Reflection</span>
+                <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">What This Taught Me</h2>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.reflection}</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-950 p-8 self-start">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-4">Skills developed</p>
+                <div className="space-y-2">
+                  {[
+                    'Programming & simulating a 6-axis industrial robot for additive manufacturing',
+                    'Formulating a printable, recycled cork-based biomaterial',
+                    'Slicing a topology-optimized mesh into a non-planar robotic toolpath',
+                    'Reading print failures and iterating on geometry, speed & material in real time',
+                  ].map((s, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs text-gray-700 dark:text-gray-300">
+                      <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-400 shrink-0" />{s}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </AnimateOnScroll>
+        )}
+
+        <ProjectNav prev={prev} next={next} />
+      </div>
+    </div>
+  );
+};
+
 // ─── Router component ──────────────────────────────────────────────────────────
 
 const ProjectDetailPage: React.FC = () => {
@@ -1736,6 +1899,8 @@ const ProjectDetailPage: React.FC = () => {
       return <CompostableAltar project={project} prev={prevProject} next={nextProject} />;
     case 'incapto-coffee':
       return <IncaptoCoffee project={project} prev={prevProject} next={nextProject} />;
+    case 'non-planar-robotic-bioprinting':
+      return <NonPlanarBioprinting project={project} prev={prevProject} next={nextProject} />;
     default:
       // Fallback for any future projects
       return <FutureOfDesigning project={project} prev={prevProject} next={nextProject} />;

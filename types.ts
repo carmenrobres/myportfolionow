@@ -2,6 +2,7 @@ export enum ProjectCategory {
   INSTALLATIONS = "Installations & Exhibitions",
   AI_RESEARCH = "AI & Design Research",
   PRODUCT_DESIGN = "Product & Visual Design",
+  ROBOTICS_FABRICATION = "Robotics & Fabrication",
 }
 
 export interface Project {

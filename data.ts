@@ -1,5 +1,7 @@
 import { Project, ProjectCategory, Event } from './types';
 
+const ROBOTIC_BIOPRINTING_IMG = "/myportfolionow/images/robotic-3d-bioprinting/";
+
 export const projects: Project[] = [
   {
     id: "future-of-designing",
@@ -148,6 +150,47 @@ By blending humor and discomfort, the exhibit transformed abstract concepts abou
     reflection: `This project taught me that critical design can make invisible systems visible. It also reinforced that technology critique works best when it’s experiential, when people can feel surveillance acting on them rather than only reading about it.
 Through Unseen Exposures, I explored how art, data, and AI can meet in a space that educates without preaching, and how interaction can become a form of questioning.`,
     collaborators: "La Cristaleria (loaning the space)"
+  },
+  {
+    id: "non-planar-robotic-bioprinting",
+    title: "Non-Planar Robotic 3D Bio-Printing",
+    subtitle: "MRAC Workshop 1.1: Bio-Additive Manufacturing with Recycled Cork",
+    year: "2024",
+    category: ProjectCategory.ROBOTICS_FABRICATION,
+    image: `${ROBOTIC_BIOPRINTING_IMG}cover-robot-printing.jpg`,
+    externalLink: "https://blog.iaac.net/bio-additive-manufacturing-mrac-workshop-1-1/",
+    images: [
+      `${ROBOTIC_BIOPRINTING_IMG}process-lab-testing.jpg`,
+      `${ROBOTIC_BIOPRINTING_IMG}process-hand-extrusion.jpg`,
+      `${ROBOTIC_BIOPRINTING_IMG}process-mixing-material.jpg`,
+      `${ROBOTIC_BIOPRINTING_IMG}process-material-closeup.jpg`,
+    ],
+    processImages: [
+      `${ROBOTIC_BIOPRINTING_IMG}process-design-to-robot.jpg`,
+      `${ROBOTIC_BIOPRINTING_IMG}process-geometry-catalogue-exploration.jpg`,
+      `${ROBOTIC_BIOPRINTING_IMG}process-geometry-catalogue-final.jpg`,
+    ],
+    outcomeImages: [
+      `${ROBOTIC_BIOPRINTING_IMG}outcome-render-interior.jpg`,
+      `${ROBOTIC_BIOPRINTING_IMG}outcome-render-architecture.jpg`,
+      `${ROBOTIC_BIOPRINTING_IMG}outcome-angle-analysis.jpg`,
+    ],
+    overview: "This was my first hands-on experience with robotic 3D printing: a one-week seminar at IAAC exploring non-planar additive manufacturing with a 6-axis industrial robot. Working in a team of seven, we 3D printed a stool using a biomaterial made from cork recycled from wine stoppers, guiding the robot to build non-planar, topology-optimized forms that a standard flat-layer printer could never produce.",
+    industry: ["Robotic Fabrication", "Digital Fabrication", "Biomaterials", "Computational Design"],
+    service: ["Topology Optimization", "Robot Programming", "Material Research", "Prototyping"],
+    learnings: "Learned to program and simulate a 6-axis industrial robot (ABB IRB 6700) for additive manufacturing, formulate and mix a printable cork-based biomaterial, translate a topology-optimized mesh into a non-planar robotic toolpath, and troubleshoot a physical print in real time as a team.",
+    needs: "Standard 3D printers build in flat, horizontal layers, which limits the forms they can produce and wastes material on supports. The seminar's brief was to explore how the 6 axes of a robotic arm could go beyond that constraint, printing non-planar paths directly onto a topology-optimized, form-found geometry, while also testing a recycled, bio-based material as an alternative to standard plastics.",
+    concept: "The concept combined two research threads: topology optimization as a form-finding tool, using engineering load analysis to remove material where it isn't structurally needed, and non-planar robotic printing as the fabrication method able to follow the resulting organic, undercut-heavy geometry. Cork powder recycled from wine stoppers was chosen as the print material, mixed with gelatine, xanthan gum, pectin and bicarbonate into a paste that could hold its shape while curing. The final design was a stool: a single continuous form with legs generated directly from a structural topology-optimization study.",
+    process: [
+      "Topology Optimization: Using ntop, we ran structural simulations on a simple loaded volume to let the software remove non-load-bearing material, generating several stool geometries with different numbers of legs and supports.",
+      "Material Development: We formulated a cork-paste biomaterial through iterative test batches, tuning the ratio of cork, gelatine, xanthan gum, pectin and water until it extruded cleanly and held its shape layer over layer.",
+      "Toolpathing: The optimized mesh was sliced into contours every 5mm and converted into a continuous non-planar path for the robot, split into a base-support file and a body file to keep the code light enough for the controller.",
+      "Robotic Printing: An ABB IRB 6700 industrial arm fitted with a WASP pump extruder printed the cork paste directly, layer width and robot speed were tuned iteratively (from 5% up to 35% speed) across multiple failed and successful print attempts.",
+      "Iteration & Angle Analysis: Each failed print (seams shifting, legs collapsing under their own weight) fed back into the geometry, adjusting overhang angles, flipping the print orientation, and reinforcing the merging points between legs and body."
+    ],
+    outcome: "After several test prints, the final stool geometry printed successfully in cork paste, holding forms up to 45cm tall with angles beyond 30 degrees. We also produced final renders exploring how the technique could scale into architectural cork paneling and furniture, and worked out full production costs: around 4.8kg of material and roughly 130 minutes of combined robot and labor time per piece.",
+    reflection: "This workshop was my introduction to robotic fabrication, and it reframed 3D printing for me as a spatial, six-degrees-of-freedom problem rather than a flat, layer-by-layer one. Working with a live biomaterial that could fail mid-print (collapsing, cracking, drying unevenly) taught me to treat fabrication as an iterative dialogue between the design file and the physical robot, not a one-way export.",
+    collaborators: "Aayushi Vasnik, Vasileios Mavromitros, Clara Edith Carmona Hernández, Lauren Deming and Jorge Muñoz (IAAC Master in Robotics & Advanced Construction); faculty Ricardo Mayor, Sheikh Rizvi Riaz and Nestor Beguin"
   },
   {
     id: "tania-pilot",
