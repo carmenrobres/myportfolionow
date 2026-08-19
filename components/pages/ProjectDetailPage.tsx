@@ -1710,11 +1710,49 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
   const processImages = project.processImages || [];
   const outcomeImages = project.outcomeImages || [];
 
-  const printSpecs = [
-    { label: 'Robot', detail: 'ABB IRB 6700 - 6-axis industrial arm fitted with a WASP pump extruder' },
-    { label: 'Material', detail: 'Recycled cork powder + gelatine, xanthan gum, pectin & bicarbonate paste' },
-    { label: 'Layer settings', detail: '5mm layer height, 1.5cm width, robot speed tuned from 5% up to 35%' },
-    { label: 'Production', detail: '~4.8kg material and ~130 min combined robot + labor time per piece' },
+  const softwareHardware = [
+    { label: 'ntop', detail: 'Structural topology optimization - generated the leg/support catalogue from a loaded volume' },
+    { label: 'Rhino 3D', detail: 'Geometry cleanup, flipping the mesh for printability, and rendering the cork material' },
+    { label: 'Grasshopper', detail: 'Parametric slicing - contouring the mesh every 5mm and splitting it into robot-readable files' },
+    { label: 'ABB IRB 6700', detail: '6-axis industrial arm running the toolpath as native robot code, simulated in Rhino first' },
+    { label: 'WASP pump + Arduino', detail: 'Paste extruder - Arduino regulated pump pressure (15-50) and motor speed (300-5,000) in sync with the robot' },
+  ];
+
+  const recipe = [
+    { ingredient: 'Cork powder', qty: '1 kg', pct: '11.3%' },
+    { ingredient: 'Gelatine', qty: '600 g', pct: '6.8%' },
+    { ingredient: 'Xanthan gum', qty: '350 g', pct: '3.9%' },
+    { ingredient: 'Pectin', qty: '285 g', pct: '3.2%' },
+    { ingredient: 'Bicarbonate of soda', qty: '125 g', pct: '1.4%' },
+    { ingredient: 'Distilled water', qty: '3.25 L', pct: '36.7%' },
+    { ingredient: 'Tap water', qty: '3.25 L', pct: '36.7%' },
+  ];
+
+  const iterationRounds = [
+    {
+      title: 'Round 1 - the print couldn’t hold itself up',
+      fixes: [
+        'Added material as printed infill to give the walls compressive strength.',
+        'Used temporary shoring to hold sections up while the material set.',
+        'Printed in segments, pausing to let lower layers cure before building height.',
+      ],
+    },
+    {
+      title: 'Round 2 - refining the fix',
+      fixes: [
+        'Swapped printed infill for loose ground cork, faster to place and just as effective at bracing the walls.',
+        'Re-optimized contour angles on the steepest overhangs so the toolpath itself needed less bracing.',
+      ],
+    },
+  ];
+
+  const costRows = [
+    { item: 'Cork', cost: '€5.59' },
+    { item: 'Gelatine', cost: '€25.59' },
+    { item: 'Xanthan gum', cost: '€11.16' },
+    { item: 'Pectin', cost: '€50.40' },
+    { item: 'Bicarbonate', cost: '€0.69' },
+    { item: 'Distilled water', cost: '€6.79' },
   ];
 
   return (
@@ -1774,33 +1812,72 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
           </div>
         </AnimateOnScroll>
 
-        {/* Brief + concept, with material/process image grid */}
+        {/* Brief + concept */}
         <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">The Brief</span>
           <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">Beyond Flat Layers</h2>
           <div className="grid md:grid-cols-2 gap-16 items-start">
-            <div>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">{project.needs}</p>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.concept}</p>
-            </div>
-            {images.length > 0 && (
-              <div className="grid grid-cols-2 gap-3">
-                {images.map((img, i) => (
-                  <Img key={i} src={img} alt={`Material and robot testing ${i + 1}`} className="w-full aspect-[3/4]" />
-                ))}
-              </div>
-            )}
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.needs}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.concept}</p>
           </div>
         </AnimateOnScroll>
 
-        {/* Process + print specs */}
+        {/* Material & Recipe */}
+        <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Material</span>
+          <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">A Printable Cork Biomaterial</h2>
+          <div className="grid md:grid-cols-2 gap-16 items-start mb-10">
+            <div>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                We started from a constant base of cork powder, bicarbonate and water, then ran four test batches scaling the gelatine, xanthan gum and pectin content by +5%, +10%, +15% and +20% until we found a mix that extruded cleanly through the WASP pump and held its own weight, layer over layer, without slumping.
+              </p>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                <strong className="font-semibold text-black dark:text-brand-light">Mixing method: </strong>
+                whisk the gelatine into cold desalinated water little by little until spongy, let it set briefly. Separately mix the cork granules with the xanthan gum, pectin and bicarbonate until every granule is coated. Fold the gelatine mixture into the cork mixture until homogenous and load into the WASP pump.
+              </p>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                <strong className="font-semibold text-black dark:text-brand-light">Conservation: </strong>
+                any leftover material was covered in cellophane between prints to stop it drying out and losing its extrudability before the next session.
+              </p>
+            </div>
+            <div className="border border-gray-200 dark:border-gray-800">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-[10px] uppercase tracking-[0.2em] text-brand-muted dark:text-gray-500 font-sans">
+                    <th className="p-3 font-medium">Final recipe</th>
+                    <th className="p-3 font-medium text-right">Qty</th>
+                    <th className="p-3 font-medium text-right">Share</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recipe.map((r, i) => (
+                    <tr key={i} className="border-b border-gray-100 dark:border-gray-900 last:border-0">
+                      <td className="p-3 text-gray-700 dark:text-gray-300">{r.ingredient}</td>
+                      <td className="p-3 text-right text-gray-700 dark:text-gray-300">{r.qty}</td>
+                      <td className="p-3 text-right text-gray-500 dark:text-gray-500">{r.pct}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {images.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {images.map((img, i) => (
+                <Img key={i} src={img} alt={`Material testing and recipe development ${i + 1}`} className="w-full aspect-[3/4]" />
+              ))}
+            </div>
+          )}
+        </AnimateOnScroll>
+
+        {/* Process: software + toolpath */}
         <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Process</span>
           <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-10">From Topology Optimization to Toolpath</h2>
           <div className="grid md:grid-cols-2 gap-12 mb-12">
             <div>{renderContent(project.process, true)}</div>
-            <div className="grid grid-cols-2 gap-px bg-gray-200 dark:bg-gray-800 self-start">
-              {printSpecs.map((m, i) => (
+            <div className="grid grid-cols-1 gap-px bg-gray-200 dark:bg-gray-800 self-start">
+              {softwareHardware.map((m, i) => (
                 <div key={i} className="bg-white dark:bg-black p-5">
                   <p className="font-bold text-black dark:text-brand-light font-sans text-sm mb-1">{m.label}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{m.detail}</p>
@@ -1809,29 +1886,105 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
             </div>
           </div>
           {processImages.length > 0 && (
-            <div className="space-y-3">
-              {processImages.map((img, i) => (
-                <AnimateOnScroll key={i}>
-                  <Img src={img} alt={`Design and fabrication process ${i + 1}`} className="w-full" />
-                </AnimateOnScroll>
+            <div className="grid sm:grid-cols-2 gap-3 mb-3">
+              {processImages.slice(0, -1).map((img, i) => (
+                <Img key={i} src={img} alt={`Robot printing and Rhino/Grasshopper workflow ${i + 1}`} className="w-full aspect-[4/3]" />
               ))}
             </div>
           )}
+          {processImages.length > 0 && (
+            <Img src={processImages[processImages.length - 1]} alt="Iteration analysis across print attempts" className="w-full" />
+          )}
+        </AnimateOnScroll>
+
+        {/* Print iterations - the reasoning */}
+        <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Iterations</span>
+          <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-4">Why the Design Kept Changing</h2>
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mb-10">
+            The Iteration Analysis chart above tracks every attempt: layer height, layer width, robot speed and what went wrong. Each failure fed directly back into the next round of decisions.
+          </p>
+          <div className="grid md:grid-cols-2 gap-12">
+            {iterationRounds.map((round, i) => (
+              <div key={i}>
+                <h3 className="text-sm font-bold text-black dark:text-brand-light font-sans mb-4">{round.title}</h3>
+                <ul className="space-y-3">
+                  {round.fixes.map((f, j) => (
+                    <li key={j} className="flex gap-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                      <span className="shrink-0 text-brand-muted dark:text-gray-500">→</span>{f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </AnimateOnScroll>
+
+        {/* Morphology & angle study */}
+        <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Morphology</span>
+          <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">Choosing a Shape That Could Actually Print</h2>
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mb-8">
+            ntop's topology optimization gave us two catalogues to choose from: a first pass of four rough forms exploring different leg and support counts, then a refined pass of four more balanced variants. We picked the single-leg, single-support geometry because it used the least material and the fewest print supports - but it also had the steepest overhangs, so it needed its own angle study before it was printable.
+          </p>
+          {outcomeImages[3] && <Img src={outcomeImages[3]} alt="Final geometry catalogue from topology optimization" className="w-full mb-3" />}
+          <div className="grid md:grid-cols-2 gap-12 items-start mt-10">
+            <div>
+              <h3 className="text-sm font-bold text-black dark:text-brand-light font-sans mb-4">Angle & deformation analysis</h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                We ran an inclination analysis across 8 orientations of the design, color-coding every face by overhang angle (green = safe, red = too steep to print unsupported). Reading that map against the geometry told us exactly where the print would need help:
+              </p>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li className="flex gap-3"><span className="shrink-0 text-brand-muted dark:text-gray-500">→</span>Deformation on top was counteracted by printing the piece upside down.</li>
+                <li className="flex gap-3"><span className="shrink-0 text-brand-muted dark:text-gray-500">→</span>The legs showed minimal deformation, confirming the single-leg geometry was structurally sound.</li>
+                <li className="flex gap-3"><span className="shrink-0 text-brand-muted dark:text-gray-500">→</span>The area where legs merge into the seat deformed least of all, validating it as the geometry's strongest point.</li>
+              </ul>
+            </div>
+            {outcomeImages[2] && <Img src={outcomeImages[2]} alt="Angle and deformation analysis of the final geometry" className="w-full" />}
+          </div>
         </AnimateOnScroll>
 
         {/* Outcome */}
-        {outcomeImages.length > 0 && (
-          <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Outcome</span>
-            <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-4">A Printable Non-Planar Stool</h2>
-            <div className="max-w-2xl mb-8">{renderContent(project.outcome)}</div>
-            <div className="grid grid-cols-3 gap-3">
-              {outcomeImages.map((img, i) => (
-                <Img key={i} src={img} alt={`Outcome ${i + 1}`} className={`w-full ${i === 0 ? 'col-span-3 aspect-[21/9]' : 'aspect-square'}`} />
-              ))}
+        <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Outcome</span>
+          <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-4">A Printable Non-Planar Stool</h2>
+          <div className="max-w-2xl mb-8">{renderContent(project.outcome)}</div>
+          <div className="grid grid-cols-2 gap-3 mb-10">
+            {outcomeImages[0] && <Img src={outcomeImages[0]} alt="Final render, interior application" className="w-full aspect-[4/3]" />}
+            {outcomeImages[1] && <Img src={outcomeImages[1]} alt="Final render, architectural application" className="w-full aspect-[4/3]" />}
+            {outcomeImages[4] && <Img src={outcomeImages[4]} alt="Detail of the printed cork stool" className="w-full aspect-[4/3]" />}
+            <div className="w-full aspect-[4/3] bg-gray-50 dark:bg-gray-950 p-5 flex flex-col justify-center">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-3">Per-base cost</p>
+              <p className="text-3xl font-bold text-black dark:text-brand-light font-sans mb-1">€237.72</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">~4.8kg material · ~130 min robot + labor</p>
             </div>
-          </AnimateOnScroll>
-        )}
+          </div>
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div className="border border-gray-200 dark:border-gray-800">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-[10px] uppercase tracking-[0.2em] text-brand-muted dark:text-gray-500 font-sans">
+                    <th className="p-3 font-medium">Material cost / base</th>
+                    <th className="p-3 font-medium text-right">Cost</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {costRows.map((r, i) => (
+                    <tr key={i} className="border-b border-gray-100 dark:border-gray-900">
+                      <td className="p-3 text-gray-700 dark:text-gray-300">{r.item}</td>
+                      <td className="p-3 text-right text-gray-700 dark:text-gray-300">{r.cost}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td className="p-3 font-semibold text-black dark:text-brand-light">Total material</td>
+                    <td className="p-3 text-right font-semibold text-black dark:text-brand-light">€100.22</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            {outcomeImages[5] && <Img src={outcomeImages[5]} alt="Full production cost breakdown" className="w-full" />}
+          </div>
+        </AnimateOnScroll>
 
         {/* Reflection */}
         {project.reflection && (
@@ -1847,8 +2000,8 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
                 <div className="space-y-2">
                   {[
                     'Programming & simulating a 6-axis industrial robot for additive manufacturing',
-                    'Formulating a printable, recycled cork-based biomaterial',
-                    'Slicing a topology-optimized mesh into a non-planar robotic toolpath',
+                    'Formulating and preserving a printable, recycled cork-based biomaterial',
+                    'Slicing a topology-optimized mesh into a non-planar robotic toolpath in Rhino/Grasshopper',
                     'Reading print failures and iterating on geometry, speed & material in real time',
                   ].map((s, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs text-gray-700 dark:text-gray-300">

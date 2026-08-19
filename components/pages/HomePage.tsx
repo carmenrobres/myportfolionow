@@ -10,6 +10,7 @@ const HomePage: React.FC = () => {
   const featuredProjects = HIGHLIGHTED_PROJECT_IDS
     .map(id => projects.find(p => p.id === id))
     .filter((p): p is typeof projects[number] => Boolean(p));
+  const otherProjects = projects.filter(p => !HIGHLIGHTED_PROJECT_IDS.includes(p.id));
 
   return (
     <div className="space-y-24 md:space-y-40 pb-24 md:pb-40">
@@ -20,7 +21,7 @@ const HomePage: React.FC = () => {
             <div className="max-w-4xl">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black dark:text-brand-light leading-tight font-sans">
                   Hi, I'm an Industrial Designer / Engineer /<br />
-                  Researcher / Maker /<br />
+                  Maker /<br />
                   Innovator <span className="font-sans italic text-4xl md:text-5xl lg:text-6xl font-normal ml-2">(kind of)</span>
               </h1>
             </div>
@@ -41,6 +42,31 @@ const HomePage: React.FC = () => {
             ))}
           </div>
         </AnimateOnScroll>
+
+        {/* More Projects */}
+        {otherProjects.length > 0 && (
+          <AnimateOnScroll as="section" className="pt-16">
+            <h3 className="text-xs uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans mb-6">More Projects</h3>
+            <div className="border-t border-gray-200 dark:border-gray-700">
+              {otherProjects.map((project, index) => (
+                <AnimateOnScroll key={project.id} stagger={index * 50}>
+                  <Link to={`/projects/${project.id}`} className="block group">
+                    <div className="flex justify-between items-center py-5 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300 group-hover:bg-brand-olive-light dark:group-hover:bg-brand-dark-gray/50">
+                      <div className="w-1/2 transition-all duration-300 group-hover:pl-4">
+                        <h4 className="text-lg md:text-xl font-medium text-black dark:text-brand-light font-sans">{project.title}</h4>
+                        <p className="mt-1 text-sm text-brand-muted dark:text-gray-400 font-sans">{project.subtitle}</p>
+                      </div>
+                      <div className="flex items-center space-x-8 text-sm text-brand-muted dark:text-gray-400 uppercase tracking-wider w-1/2 justify-end pr-4">
+                        <span className="hidden md:inline w-1/3 text-right">{project.category}</span>
+                        <span className="w-16 text-right">{project.year}</span>
+                      </div>
+                    </div>
+                  </Link>
+                </AnimateOnScroll>
+              ))}
+            </div>
+          </AnimateOnScroll>
+        )}
 
         {/* About Snapshot */}
         <AnimateOnScroll as="section" className="py-24 grid md:grid-cols-2 gap-12 items-center">

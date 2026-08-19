@@ -6,7 +6,7 @@ import ProjectCard from '../ProjectCard';
 import AnimateOnScroll from '../AnimateOnScroll';
 
 const ProjectsPage: React.FC = () => {
-  const [view, setView] = useState<'list' | 'grid'>('list');
+  const [view, setView] = useState<'list' | 'grid'>('grid');
   const [activeCategory, setActiveCategory] = useState<ProjectCategory | 'All'>('All');
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -30,12 +30,12 @@ const ProjectsPage: React.FC = () => {
 
   const ViewSwitcher = () => (
     <div className="text-sm text-brand-muted dark:text-gray-400">
-      <button onClick={() => setView('list')} className={`hover:text-black dark:hover:text-brand-light transition-colors ${view === 'list' ? 'text-black dark:text-brand-light' : ''}`}>
-        (List View)
-      </button>
-      <span className="mx-1">/</span>
       <button onClick={() => setView('grid')} className={`hover:text-black dark:hover:text-brand-light transition-colors ${view === 'grid' ? 'text-black dark:text-brand-light' : ''}`}>
         (Grid View)
+      </button>
+      <span className="mx-1">/</span>
+      <button onClick={() => setView('list')} className={`hover:text-black dark:hover:text-brand-light transition-colors ${view === 'list' ? 'text-black dark:text-brand-light' : ''}`}>
+        (List View)
       </button>
     </div>
   );
