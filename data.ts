@@ -154,7 +154,7 @@ Through Unseen Exposures, I explored how art, data, and AI can meet in a space t
   {
     id: "non-planar-robotic-bioprinting",
     title: "Non-Planar Robotic 3D Bio-Printing",
-    subtitle: "MRAC Workshop 1.1: Bio-Additive Manufacturing with Recycled Cork",
+    subtitle: "Bio-Additive Manufacturing with Recycled Cork",
     year: "2024",
     category: ProjectCategory.ROBOTICS_FABRICATION,
     image: "https://i.imgur.com/GQVm1MV.jpeg",
