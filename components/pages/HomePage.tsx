@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import { projects } from '../../data';
 import ProjectCard from '../ProjectCard';
 import AnimateOnScroll from '../AnimateOnScroll';
+import { ImageStreamHero } from '../ui/image-stream-hero';
 
 const HIGHLIGHTED_PROJECT_IDS = ['compostable-altar', 'tania-pilot', 'miralls-del-dema'];
+
+const HERO_IMAGES = projects.map(p => ({ src: p.image, alt: p.title }));
 
 const HomePage: React.FC = () => {
   const featuredProjects = HIGHLIGHTED_PROJECT_IDS
@@ -14,20 +17,26 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-24 md:space-y-40 pb-24 md:pb-40">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 md:pt-24">
-         {/* Hero Section */}
-        <section className="min-h-[50vh] flex flex-col justify-center text-left">
-          <AnimateOnScroll>
-            <div className="max-w-4xl">
+      {/* Hero Section - full bleed image corridor */}
+      <ImageStreamHero images={HERO_IMAGES} axis={62} cards={10} className="min-h-[70vh] md:min-h-[85vh] w-full">
+        <div className="relative z-10 flex h-full min-h-[70vh] md:min-h-[85vh] flex-col justify-between py-16 md:py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <AnimateOnScroll>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black dark:text-brand-light leading-tight font-sans">
-                  Hi, I'm an Industrial Designer / Engineer /<br />
-                  Maker /<br />
+                  Hi :) I'm an Engineer,<br />
+                  Industrial Designer,<br />
+                  Maker,<br />
                   Innovator <span className="font-sans italic text-4xl md:text-5xl lg:text-6xl font-normal ml-2">(kind of)</span>
               </h1>
-            </div>
-          </AnimateOnScroll>
-        </section>
+            </AnimateOnScroll>
+          </div>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <Link to="/projects" className="text-black dark:text-brand-light hover:text-brand-muted dark:hover:text-gray-400 uppercase tracking-wider text-sm font-medium">See My Work &rarr;</Link>
+          </div>
+        </div>
+      </ImageStreamHero>
 
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Highlights Section */}
         <AnimateOnScroll as="section" className="pt-24">
           <div className="flex justify-between items-end mb-12">

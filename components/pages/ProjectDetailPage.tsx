@@ -75,6 +75,17 @@ const renderContent = (content: string | string[] | undefined, isProcess = false
   return null;
 };
 
+// Bold specific phrases within a plain string, matched verbatim
+const boldTerms = (text: string, terms: string[]): React.ReactNode[] => {
+  if (!terms.length) return [text];
+  const pattern = new RegExp(`(${terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g');
+  return text.split(pattern).map((part, i) =>
+    terms.includes(part)
+      ? <strong key={i} className="font-semibold text-black dark:text-brand-light">{part}</strong>
+      : <React.Fragment key={i}>{part}</React.Fragment>
+  );
+};
+
 // Clickable image
 const Img: React.FC<{ src: string; alt: string; className?: string; fit?: 'cover' | 'contain' }> = ({ src, alt, className = '', fit = 'cover' }) => {
   const { showLightbox } = useLightbox();
@@ -1792,8 +1803,10 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
           <div className="grid md:grid-cols-3 gap-12">
             <div className="md:col-span-2">
               <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Overview</span>
-              <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">My First Robotic 3D Print</h2>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.overview}</p>
+              <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">Printing a Non-Planar Form in Cork</h2>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                {boldTerms(project.overview, ['6-axis industrial robot', 'cork recycled from wine stoppers', 'structural topology optimization', 'angle-deformation study'])}
+              </p>
             </div>
             <div className="text-sm space-y-5 border-l border-gray-200 dark:border-gray-700 pl-8">
               <div>
@@ -1815,10 +1828,14 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
         {/* Brief + concept */}
         <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">The Brief</span>
-          <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">Beyond Flat Layers</h2>
+          <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-6">Printing in Six Axes</h2>
           <div className="grid md:grid-cols-2 gap-16 items-start">
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.needs}</p>
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{project.concept}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              {boldTerms(project.needs, ['6 axes of a robotic arm', 'non-planar paths', 'recycled, bio-based material'])}
+            </p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              {boldTerms(project.concept, ['topology optimization', 'non-planar robotic printing', 'single-leg, single-support geometry'])}
+            </p>
           </div>
         </AnimateOnScroll>
 
@@ -1862,7 +1879,7 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
             </div>
           </div>
           {images.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {images.map((img, i) => (
                 <Img key={i} src={img} alt={`Material testing and recipe development ${i + 1}`} className="w-full aspect-[3/4]" />
               ))}
@@ -1886,14 +1903,11 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
             </div>
           </div>
           {processImages.length > 0 && (
-            <div className="grid sm:grid-cols-2 gap-3 mb-3">
-              {processImages.slice(0, -1).map((img, i) => (
+            <div className="grid sm:grid-cols-3 gap-3">
+              {processImages.map((img, i) => (
                 <Img key={i} src={img} alt={`Robot printing and Rhino/Grasshopper workflow ${i + 1}`} className="w-full aspect-[4/3]" />
               ))}
             </div>
-          )}
-          {processImages.length > 0 && (
-            <Img src={processImages[processImages.length - 1]} alt="Iteration analysis across print attempts" className="w-full" />
           )}
         </AnimateOnScroll>
 
@@ -1902,7 +1916,7 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Iterations</span>
           <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-4">Why the Design Kept Changing</h2>
           <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mb-10">
-            The Iteration Analysis chart above tracks every attempt: layer height, layer width, robot speed and what went wrong. Each failure fed directly back into the next round of decisions.
+            Two rounds of failed prints - seams shifting, legs collapsing under their own weight - fed directly back into how we built the next attempt:
           </p>
           <div className="grid md:grid-cols-2 gap-12">
             {iterationRounds.map((round, i) => (
@@ -1948,7 +1962,9 @@ const NonPlanarBioprinting: React.FC<{ project: Project; prev: Project | null; n
         <AnimateOnScroll className="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-muted dark:text-gray-500 font-sans">Outcome</span>
           <h2 className="mt-2 text-2xl font-bold text-black dark:text-brand-light font-sans mb-4">A Printable Non-Planar Stool</h2>
-          <div className="max-w-2xl mb-8">{renderContent(project.outcome)}</div>
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mb-8">
+            {boldTerms(project.outcome, ['45cm tall with overhangs beyond 30 degrees', '€237.72'])}
+          </p>
           <div className="grid grid-cols-2 gap-3 mb-10">
             {outcomeImages[0] && <Img src={outcomeImages[0]} alt="Final render, interior application" className="w-full aspect-[4/3]" />}
             {outcomeImages[1] && <Img src={outcomeImages[1]} alt="Final render, architectural application" className="w-full aspect-[4/3]" />}
