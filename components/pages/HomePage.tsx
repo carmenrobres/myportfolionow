@@ -10,14 +10,16 @@ const HIGHLIGHTED_PROJECT_IDS = ['compostable-altar', 'tania-pilot', 'miralls-de
 // Layout for each floating project photo, positioned as a percentage of the
 // (right-half only, see HeroFloaters below) hero image rail - not the full
 // hero width - so parallax drift can never reach the headline on the left.
+// Kept away from the box's own right edge (max ~80%) so every photo stays
+// clearly visible instead of being clipped down to a sliver.
 const FLOATER_LAYOUT = [
-  { position: 'top-[4%] left-[26%]', depth: 0.5, size: 'w-20 h-20 md:w-28 md:h-28' },
-  { position: 'top-[2%] left-[70%]', depth: 1.5, size: 'w-24 h-24 md:w-32 md:h-32' },
-  { position: 'top-[24%] left-[96%]', depth: 2.5, size: 'w-28 h-36 md:w-36 md:h-48' },
-  { position: 'top-[42%] left-[34%]', depth: 1.2, size: 'w-28 h-28 md:w-36 md:h-36' },
-  { position: 'top-[58%] left-[74%]', depth: 1, size: 'w-28 h-28 md:w-36 md:h-36' },
-  { position: 'top-[76%] left-[30%]', depth: 2, size: 'w-28 h-36 md:w-36 md:h-52' },
-  { position: 'top-[88%] left-[78%]', depth: 0.8, size: 'w-24 h-24 md:w-32 md:h-32' },
+  { position: 'top-[4%] left-[24%]', depth: 0.5, size: 'w-20 h-20 md:w-28 md:h-28' },
+  { position: 'top-[2%] left-[62%]', depth: 1.5, size: 'w-24 h-24 md:w-32 md:h-32' },
+  { position: 'top-[22%] left-[80%]', depth: 2.5, size: 'w-28 h-36 md:w-36 md:h-48' },
+  { position: 'top-[42%] left-[30%]', depth: 1.2, size: 'w-28 h-28 md:w-36 md:h-36' },
+  { position: 'top-[56%] left-[68%]', depth: 1, size: 'w-28 h-28 md:w-36 md:h-36' },
+  { position: 'top-[74%] left-[26%]', depth: 2, size: 'w-28 h-36 md:w-36 md:h-52' },
+  { position: 'top-[86%] left-[72%]', depth: 0.8, size: 'w-24 h-24 md:w-32 md:h-32' },
 ];
 
 const HERO_FLOATERS = projects.map((project, i) => ({
@@ -65,7 +67,7 @@ const HomePage: React.FC = () => {
         <HeroFloaters />
 
         <div className="relative z-10 flex h-full min-h-[70vh] md:min-h-[85vh] flex-col justify-between py-16 md:py-20 pointer-events-none">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto pt-12 md:pt-20">
             <AnimateOnScroll>
               <h1 className="max-w-xl md:max-w-2xl lg:max-w-3xl text-5xl md:text-6xl lg:text-7xl font-bold text-black dark:text-brand-light leading-tight font-sans">
                   Hi :) I'm an Engineer,<br />
