@@ -1555,10 +1555,6 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
     { label: 'Product', items: ['New coffee machine design support', 'Supplier coordination', 'Cross-team brand consistency'] },
   ];
 
-  // Aesthetic-only images - used as visual context, not content
-  const aestheticHero = 'https://i.imgur.com/XiPjkwQ.jpeg';
-  const aestheticContext = 'https://i.imgur.com/XRpZwgF.jpeg';
-
   // All content images - shown fully as case study slides
   const allContentImages = [...images, ...outcomeImages];
 
@@ -1567,7 +1563,7 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
 
       {/* ── HERO ── */}
       <div className="relative h-[70vh] overflow-hidden">
-        <img src={aestheticHero} alt={project.title} loading="eager" decoding="async" className="w-full h-full object-cover" />
+        <img src={project.image} alt={project.title} loading="eager" decoding="async" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
           <AnimateOnScroll>
@@ -1610,7 +1606,7 @@ const IncaptoCoffee: React.FC<{ project: Project; prev: Project | null; next: Pr
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{project.needs}</p>
             </div>
             <div className="space-y-5 text-sm border-l border-gray-200 dark:border-gray-700 pl-8">
-              <Img src={aestheticContext} alt="Incapto brand context" className="w-full mb-4" />
+              {project.contextImage && <Img src={project.contextImage} alt="Incapto brand context" className="w-full mb-4" />}
               <div>
                 <p className="text-[10px] uppercase tracking-[0.25em] text-brand-muted dark:text-gray-500 font-sans mb-2">Collaborators</p>
                 <p className="text-gray-700 dark:text-gray-300">{project.collaborators}</p>

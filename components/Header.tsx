@@ -84,8 +84,8 @@ const Header: React.FC = () => {
   return (
     <>
       <header className="sticky top-0 z-30 bg-brand-light dark:bg-brand-black transition-colors duration-300">
-        <div className="container mx-auto px-4 sm:px-6 lg:p-8">
-          <div className="flex items-center justify-between h-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
             <div className="flex-shrink-0">
               <Link to="/" className="text-lg font-sans font-bold tracking-wide text-black dark:text-brand-light uppercase hover:opacity-70 transition-opacity">
                 Carmen Robres de Veciana

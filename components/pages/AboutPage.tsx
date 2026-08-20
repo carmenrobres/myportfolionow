@@ -92,9 +92,27 @@ const AboutPage: React.FC = () => {
           </div>
           <div className="md:col-span-2 space-y-4 text-sm text-gray-700 dark:text-gray-300">
               <p><strong className="font-semibold text-black dark:text-brand-light">Languages:</strong> Spanish: Native | Catalan: Native | English: C1 | French: B2</p>
-              <p><strong className="font-semibold text-black dark:text-brand-light">High Level:</strong> SolidWorks | Illustrator | Figma</p>
-              <p><strong className="font-semibold text-black dark:text-brand-light">Medium Level:</strong> Photoshop | After Effects | Arduino | 3DSMax</p>
-              <p><strong className="font-semibold text-black dark:text-brand-light">Basic Knowledge:</strong> Python | SprutCAM | Rhino | Microsoft Package | 3D Printing | CNC Cutting | Electronics</p>
+              <p><strong className="font-semibold text-black dark:text-brand-light">Data Science &amp; AI Tools:</strong> Python (Pandas, NumPy) | SQL | Jupyter Notebook | Git/GitHub | Plotly | REST APIs &amp; Web Scraping</p>
+              <p><strong className="font-semibold text-black dark:text-brand-light">Innovation &amp; Research:</strong> Technology Scouting | Applied AI | Technology Transfer | Open Innovation | Innovation Management | Design Research</p>
+              <p><strong className="font-semibold text-black dark:text-brand-light">Engineering &amp; Digital Fabrication:</strong> Python | SQL | Arduino | Electronics | CNC Cutting | 3D Printing | SprutCAM</p>
+              <p><strong className="font-semibold text-black dark:text-brand-light">Design:</strong> SolidWorks | Rhino | Figma | Illustrator | Photoshop | After Effects | 3ds Max</p>
+          </div>
+        </div>
+      </AnimateOnScroll>
+
+      <AnimateOnScroll className="mt-16 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto border-t border-gray-200 dark:border-gray-700 pt-12 grid md:grid-cols-3 gap-8">
+          <div className="md:col-span-1">
+            <h2 className="text-xl font-bold uppercase tracking-wider font-sans text-black dark:text-brand-light">Certifications</h2>
+          </div>
+          <div className="md:col-span-2 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <p>AI Fluency Framework &amp; Foundations - Anthropic (2026)</p>
+              <p>Python for Data Science, AI &amp; Development - IBM (2025)</p>
+              <p>Databases and SQL for Data Science with Python - IBM (2025)</p>
+              <p>Data Science Methodology - IBM (2025)</p>
+              <p>Python Project for Data Science - IBM (2025)</p>
+              <p>Tools for Data Science - IBM (2024)</p>
+              <p>What is Data Science? - IBM (2024)</p>
           </div>
         </div>
       </AnimateOnScroll>
